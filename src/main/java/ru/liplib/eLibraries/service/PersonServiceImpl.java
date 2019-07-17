@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.liplib.eLibraries.dao.PersonDAO;
-import ru.liplib.eLibraries.dao.PersonDaoImpl;
 import ru.liplib.eLibraries.model.Person;
 
 import java.util.List;
