@@ -1,37 +1,29 @@
 package ru.liplib.eLibraries.model;
 
 import javax.persistence.*;
-import java.util.Calendar;
+import java.sql.Date;
 
 @Entity
-@Table(name = "accNonfiction")
-public class AccountNonFiction {
+@Table(name = "acclitres")
+public class AccLitres {
     @Id
-    @Column(name = "id_accNonfiction")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int nf_id;
+    private long id_accLitres;
     private String login;
     private String password;
     private boolean issued;
-    private String dateOfIssue;
-    private int id_person;
+    private Date dateOfIssue;
     private int libraryNum;
 
-    public int getId() {
-        return id;
+    public AccLitres() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public long getId_accLitres() {
+        return id_accLitres;
     }
 
-    public int getNf_id() {
-        return nf_id;
-    }
-
-    public void setNf_id(int nf_id) {
-        this.nf_id = nf_id;
+    public void setId_accLitres(long id_accLitres) {
+        this.id_accLitres = id_accLitres;
     }
 
     public String getLogin() {
@@ -58,20 +50,12 @@ public class AccountNonFiction {
         this.issued = issued;
     }
 
-    public String getDateOfIssue() {
+    public Date getDateOfIssue() {
         return dateOfIssue;
     }
 
-    public void setDateOfIssue(String dateOfIssue) {
+    public void setDateOfIssue(Date dateOfIssue) {
         this.dateOfIssue = dateOfIssue;
-    }
-
-    public int getId_person() {
-        return id_person;
-    }
-
-    public void setId_person(int id_person) {
-        this.id_person = id_person;
     }
 
     public int getLibraryNum() {
