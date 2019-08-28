@@ -12,7 +12,7 @@ import java.sql.Date;
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class MainController {
     @Autowired
     private PersonRepository personRepository;
 
