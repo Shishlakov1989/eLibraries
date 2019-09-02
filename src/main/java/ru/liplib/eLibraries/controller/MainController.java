@@ -1,11 +1,13 @@
 package ru.liplib.eLibraries.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.liplib.eLibraries.model.Person;
+import ru.liplib.eLibraries.model.User;
 import ru.liplib.eLibraries.repository.PersonRepository;
 
 import java.sql.Date;
@@ -37,10 +39,14 @@ public class MainController {
     }
 
     @PostMapping(value = "/addPerson")
-    public String addPerson(@RequestParam String fio, @RequestParam Date birthdate,
-                            @RequestParam String hasLitres, @RequestParam String hasNonfiction,
-                            @RequestParam int libNum, Map<String, Object> model) {
-        Person person = new Person(fio, birthdate, hasLitres, hasNonfiction, libNum);
+    public String addPerson(
+            @AuthenticationPrincipal User user,
+            @RequestParam String fio,
+            @RequestParam Date birthdate,
+            @RequestParam String hasLitres,
+            @RequestParam String hasNonfiction,
+            Map<String, Object> model) {
+        Person person = new Person(fio, birthdate, hasLitres, hasNonfiction, user.getLibNum());
 
         personRepository.save(person);
 

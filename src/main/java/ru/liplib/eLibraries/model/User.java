@@ -11,11 +11,12 @@ import java.util.Set;
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
     private boolean isLogged;
+    private int libNum;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -52,6 +53,14 @@ public class User implements UserDetails {
 
     public void setLogged(boolean logged) {
         isLogged = logged;
+    }
+
+    public int getLibNum() {
+        return libNum;
+    }
+
+    public void setLibNum(int libNum) {
+        this.libNum = libNum;
     }
 
     public Set<Role> getRoles() {
