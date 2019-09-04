@@ -1,6 +1,6 @@
-<html>
-<head></head>
-<body>
+<#import "blocks/page.ftl" as p>
+
+<@p.main "Добавить читателя">
     <div>
         <form method="post" action="">
             <label for="fio">FIO</label>
@@ -17,5 +17,4 @@
             <button type="submit">Добавить</button>
         </form>
     </div>
-</body>
-</html>
+</@p.main>
