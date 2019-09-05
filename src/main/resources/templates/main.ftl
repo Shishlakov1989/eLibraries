@@ -5,6 +5,7 @@
 <div>
     <@l.logout />
 </div>
+<div><a href="/login">Логин</a></div>
 <div><a href="/addPerson">Добавить читателя</a></div>
 <div>Список пользователей</div>
 <#list persons as person>

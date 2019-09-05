@@ -37,4 +37,9 @@ public class RegistrationController {
 
         return "redirect:/login";
     }
+
+    @GetMapping(value = "/login")
+    public String loginPage() {
+        return "login";
+    }
 }
