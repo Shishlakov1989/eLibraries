@@ -18,6 +18,10 @@ public class Person {
     @JoinColumn(name = "user_id")
     private User librarian;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "litres_id")
+    private LitresAcc litres;
+
     public Person() {
     }
 
@@ -75,6 +79,14 @@ public class Person {
 
     public void setLibrarian(User librarian) {
         this.librarian = librarian;
+    }
+
+    public LitresAcc getLitres() {
+        return litres;
+    }
+
+    public void setLitres(LitresAcc litres) {
+        this.litres = litres;
     }
 
     public String librarianName() {
