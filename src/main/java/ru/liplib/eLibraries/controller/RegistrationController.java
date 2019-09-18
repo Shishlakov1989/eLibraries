@@ -16,30 +16,24 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(value = "/registration")
+    @GetMapping("/registration")
     public String registration() {
         return "registration";
     }
 
-    @PostMapping(value = "/registration")
+    @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model) {
         User userFromDb = userRepository.findByUsername(user.getUsername());
 
         if (userFromDb != null) {
-            model.put("message", "Такой пользователь уже существует!");
-
+            model.put("message", "Пользователь уже существует");
             return "registration";
         }
 
-        user.setLogged(true);
+        user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
 
         return "redirect:/login";
-    }
-
-    @GetMapping(value = "/login")
-    public String loginPage() {
-        return "login";
     }
 }

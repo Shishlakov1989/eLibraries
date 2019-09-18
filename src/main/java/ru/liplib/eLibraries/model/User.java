@@ -8,15 +8,14 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "usr")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
-    private boolean isLogged;
-    private int libNum;
+    private boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -47,20 +46,12 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public boolean isLogged() {
-        return isLogged;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setLogged(boolean logged) {
-        isLogged = logged;
-    }
-
-    public int getLibNum() {
-        return libNum;
-    }
-
-    public void setLibNum(int libNum) {
-        this.libNum = libNum;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Set<Role> getRoles() {
@@ -69,11 +60,6 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
     }
 
     @Override
@@ -93,6 +79,15 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isLogged;
+        return isActive();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
     }
 }

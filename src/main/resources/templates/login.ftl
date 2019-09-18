@@ -2,5 +2,6 @@
 <#import "blocks/login.ftl" as l>
 
 <@p.main "Авторизация">
-    <@l.login "/login" />
+    <@l.login "/login" "Войти"/>
+    <a href="/registration">Регистрация</a>
 </@p.main>

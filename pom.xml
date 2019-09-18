@@ -7,7 +7,6 @@
     <groupId>ru.liplib</groupId>
     <artifactId>eLibraries</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
 
     <properties>
         <java.version>1.8</java.version>

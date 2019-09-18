@@ -2,6 +2,8 @@
 <#import "blocks/login.ftl" as l>
 
 <@p.main "Регистрация">
-    ${message}
-    <@l.login "/registration" />
+    <#if (message?exists)>
+        ${message}
+    </#if>
+    <@l.login "/registration" "Регистрация"/>
 </@p.main>

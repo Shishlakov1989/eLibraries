@@ -4,39 +4,36 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "persons")
 public class Person {
     @Id
-    @Column(name = "id_person")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
+
     private String fio;
     private Date birthdate;
-    private long id_litres;
-    private long id_nonfiction;
-    @Transient
     private String hasLitres;
-    @Transient
     private String hasNonfiction;
-    @Transient
-    private int libNum;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User librarian;
 
     public Person() {
     }
 
-    public Person(String fio, Date birthdate, String hasLitres, String hasNonfiction, int libNum) {
+    public Person(String fio, Date birthdate, String hasLitres, String hasNonfiction, User user) {
         this.fio = fio;
         this.birthdate = birthdate;
         this.hasLitres = hasLitres;
         this.hasNonfiction = hasNonfiction;
-        this.libNum = libNum;
+        this.librarian = user;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,22 +53,6 @@ public class Person {
         this.birthdate = birthdate;
     }
 
-    public long getId_litres() {
-        return id_litres;
-    }
-
-    public void setId_litres(long id_litres) {
-        this.id_litres = id_litres;
-    }
-
-    public long getId_nonfiction() {
-        return id_nonfiction;
-    }
-
-    public void setId_nonfiction(long id_nonfiction) {
-        this.id_nonfiction = id_nonfiction;
-    }
-
     public String getHasLitres() {
         return hasLitres;
     }
@@ -88,11 +69,15 @@ public class Person {
         this.hasNonfiction = hasNonfiction;
     }
 
-    public int getLibNum() {
-        return libNum;
+    public User getLibrarian() {
+        return librarian;
     }
 
-    public void setLibNum(int libNum) {
-        this.libNum = libNum;
+    public void setLibrarian(User librarian) {
+        this.librarian = librarian;
+    }
+
+    public String librarianName() {
+        return librarian != null ? librarian.getUsername() : "<none>";
     }
 }

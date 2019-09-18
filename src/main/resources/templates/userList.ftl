@@ -1,6 +1,6 @@
 <#import "blocks/page.ftl" as p>
 
-<@p.page "Список пользователей">
+<@p.main "Список пользователей">
     Список пользователей
     <table>
         <thead>
@@ -20,4 +20,4 @@
             </#list>
         </tbody>
     </table>
-</@p.page>
+</@p.main>

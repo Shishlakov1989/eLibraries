@@ -3,6 +3,7 @@ package ru.liplib.eLibraries.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,38 +19,53 @@ public class MainController {
     @Autowired
     private PersonRepository personRepository;
 
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Map<String, Object> model) {
+    @GetMapping("/")
+    public String greeting(
+            @RequestParam(name = "name", required = false, defaultValue = "World")
+                    String name,
+            Map<String, Object> model) {
         model.put("name", name);
+
         return "greeting";
     }
 
-    @GetMapping
-    public String main(Map<String, Object> model) {
-        Iterable<Person> persons = personRepository.findAll();
-
-        model.put("persons", persons);
-
+    @GetMapping("/main")
+    public String main() {
         return "main";
     }
 
-    @GetMapping(value = "/addPerson")
-    public String addPerson() {
-        return "addPerson";
+    @GetMapping("/readers")
+    public String addPersonPage(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+        Iterable<Person> persons;
+
+        if (filter != null && !filter.isEmpty()) {
+            persons = personRepository.findByFio(filter);
+        } else {
+            persons = personRepository.findAll();
+        }
+
+        model.addAttribute("persons", persons);
+        model.addAttribute("filter", filter);
+
+        return "readers";
     }
 
-    @PostMapping(value = "/addPerson")
+    @PostMapping("/readers")
     public String addPerson(
             @AuthenticationPrincipal User user,
             @RequestParam String fio,
             @RequestParam Date birthdate,
-            @RequestParam String hasLitres,
-            @RequestParam String hasNonfiction,
+            @RequestParam (required = false) String hasLitres,
+            @RequestParam (required = false) String hasNonfiction,
             Map<String, Object> model) {
-        Person person = new Person(fio, birthdate, hasLitres, hasNonfiction, user.getLibNum());
-
+        Person person = new Person(fio, birthdate, hasLitres, hasNonfiction, user);
         personRepository.save(person);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/manager")
+    public String managerPage(Map<String, Object> model) {
+        return "manager";
     }
 }
