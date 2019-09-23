@@ -1,4 +1,4 @@
-<#import "blocks/page.ftl" as p>
+<#import "../blocks/page.ftl" as p>
 
 <@p.main "Список пользователей">
     Список пользователей

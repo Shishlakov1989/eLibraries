@@ -1,8 +1,8 @@
 <#import "blocks/page.ftl" as p>
+<#import "blocks/login.ftl" as l>
 <#include "blocks/security.ftl">
 
-<@p.main "Greeting">
-<div>Hello</div>
+<@p.main "Главная страница">
     <#if isLogged>
         <a class="btn btn-secondary" data-toggle="collapse" href="#addReader" role="button" aria-expanded="false" aria-controls="addReader">
             Добавить читателя
@@ -12,18 +12,36 @@
         </a>
         <div class="collapse mt-5" id="addReader">
             <form action="/readers" method="post">
-                <label for="fio">FIO</label>
-                <input type="text" name="fio" id="fio" />
-                <label for="birthdate">Birthdate</label>
-                <input type="date" name="birthdate" id="birthdate" />
-                <label for="hasLitres">Litres</label>
-                <input type="checkbox" name="hasLitres" id="hasLitres" />
-                <label for="hasNonfiction">Non-fiction</label>
-                <input type="checkbox" name="hasNonfiction" id="hasNonfiction" />
-                <label for="libNum">Library number</label>
-                <input type="number" name="libNum" id="libNum" />
+                <div class="form-group row">
+                    <label for="fio" class="col-sm-2 col-form-label">FIO</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="fio" id="fio" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="birthdate" class="col-sm-2 col-form-label">Birthdate</label>
+                    <div class="col-sm-5">
+                        <input type="date" class="form-control" name="birthdate" id="birthdate" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">Litres</div>
+                    <div class="col-sm-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="hasLitres" id="hasLitres" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">Non-fiction</div>
+                    <div class="col-sm-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="hasNonfiction" id="hasNonfiction" />
+                        </div>
+                    </div>
+                </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <button type="submit">Добавить</button>
+                <button type="submit" class="btn btn-primary">Добавить</button>
             </form>
         </div>
         <div class="collapse mt-5" id="findReader">
@@ -32,9 +50,42 @@
                 <button type="submit">Найти</button>
             </form>
         </div>
+
+        <#if (persons?exists)>
+            <table class="table mt-5">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">Дата рождения</th>
+                        <th scope="col">Литрес</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <#list persons as person>
+                    <tr>
+                        <td>${person.fio}</td>
+                        <td>${person.birthdate}</td>
+                        <td>
+                            <#if person.litres??>
+                                <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    ${person.litres.login}
+                                </a>
+                                <div class="collapse" id="collapseExample">
+                                    ${person.litres.password}
+                                </div>
+                            <#else>
+                                Отсутствует
+                            </#if>
+                        </td>
+
+                        <td><a href="/person/${person.id}">Редактировать</a></td>
+                    </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </#if>
     <#else>
-        <a class="btn btn-primary mt-3" href="/login">
-            Авторизация
-        </a>
+        <@l.login />
     </#if>
 </@p.main>

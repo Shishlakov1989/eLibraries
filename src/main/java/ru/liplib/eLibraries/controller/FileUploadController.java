@@ -31,6 +31,6 @@ public class FileUploadController {
             }
         }
 
-        return "manager";
+        return "admin/manager";
     }
 }

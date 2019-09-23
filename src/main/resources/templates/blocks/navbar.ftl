@@ -13,7 +13,7 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/main">Main</a>
+                <a class="nav-link" href="/manager">Manager</a>
             </li>
             <#if isAdmin>
                 <li class="nav-item">
@@ -25,10 +25,6 @@
         <#if isLogged>
             <div class="navbar-text">${name}</div>
             <@l.logout />
-        <#else>
-            <a class="btn btn-light" href="/login">
-                Авторизация
-            </a>
         </#if>
     </div>
 </nav>

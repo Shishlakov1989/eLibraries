@@ -15,14 +15,7 @@ public class PersonController {
     @Autowired
     private PersonRepository personRepository;
 
-    @GetMapping
-    public String userList(Model model) {
-        model.addAttribute("persons", personRepository.findAll());
-
-        return "personList";
-    }
-
-    @GetMapping("{user}")
+    @GetMapping("{person}")
     public String userEditForm(@PathVariable Person person, Model model) {
         model.addAttribute("person", person);
 

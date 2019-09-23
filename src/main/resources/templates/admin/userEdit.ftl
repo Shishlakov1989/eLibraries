@@ -1,4 +1,4 @@
-<#import "blocks/page.ftl" as p>
+<#import "../blocks/page.ftl" as p>
 
 <@p.main "Редактирование пользователя ${user.username}">
     <form action="/user" method="post">

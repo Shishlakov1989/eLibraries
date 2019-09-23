@@ -20,11 +20,8 @@ public class MainController {
     private PersonRepository personRepository;
 
     @GetMapping("/")
-    public String greeting(
-            @RequestParam(name = "name", required = false, defaultValue = "World")
-                    String name,
-            Map<String, Object> model) {
-        model.put("name", name);
+    public String greeting(Model model) {
+        model.addAttribute("persons", personRepository.findAll());
 
         return "greeting";
     }
@@ -66,6 +63,6 @@ public class MainController {
 
     @GetMapping("/manager")
     public String managerPage(Map<String, Object> model) {
-        return "manager";
+        return "admin/manager";
     }
 }
