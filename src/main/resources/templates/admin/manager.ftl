@@ -4,7 +4,7 @@
     <form method="post" enctype="multipart/form-data" action="/uploadFile">
         <input type="file" name="file">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit">Загрузить</button>
+        <button type="submit" class="btn btn-primary">Загрузить</button>
     </form>
 
     <div>

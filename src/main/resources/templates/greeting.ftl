@@ -11,7 +11,7 @@
             Найти читателя
         </a>
         <div class="collapse mt-5" id="addReader">
-            <form action="/readers" method="post">
+            <form action="/addReader" method="post">
                 <div class="form-group row">
                     <label for="fio" class="col-sm-2 col-form-label">FIO</label>
                     <div class="col-sm-5">
@@ -45,7 +45,7 @@
             </form>
         </div>
         <div class="collapse mt-5" id="findReader">
-            <form method="get" action="/readers">
+            <form method="get">
                 <input type="text" name="filter" value="${filter?ifExists}">
                 <button type="submit">Найти</button>
             </form>

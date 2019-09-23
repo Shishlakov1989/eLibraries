@@ -36,6 +36,6 @@ public class RegistrationController {
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
 
-        return "redirect:/";
+        return "admin/userList";
     }
 }

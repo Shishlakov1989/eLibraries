@@ -20,19 +20,7 @@ public class MainController {
     private PersonRepository personRepository;
 
     @GetMapping("/")
-    public String greeting(Model model) {
-        model.addAttribute("persons", personRepository.findAll());
-
-        return "greeting";
-    }
-
-    @GetMapping("/main")
-    public String main() {
-        return "main";
-    }
-
-    @GetMapping("/readers")
-    public String addPersonPage(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+    public String greeting(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Person> persons;
 
         if (filter != null && !filter.isEmpty()) {
@@ -44,10 +32,10 @@ public class MainController {
         model.addAttribute("persons", persons);
         model.addAttribute("filter", filter);
 
-        return "readers";
+        return "greeting";
     }
 
-    @PostMapping("/readers")
+    @PostMapping("/addReader")
     public String addPerson(
             @AuthenticationPrincipal User user,
             @RequestParam String fio,

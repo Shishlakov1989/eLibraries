@@ -1,9 +1,12 @@
 <#import "../blocks/page.ftl" as p>
 
 <@p.main "Список пользователей">
-    Список пользователей
-    <table>
-        <thead>
+    <p class="text-center">Список пользователей</p>
+    <a class="btn btn-secondary" href="/registration">
+        Добавить пользователя
+    </a>
+    <table class="table mt-5">
+        <thead class="thead-light">
         <tr>
             <th>Пользователь</th>
             <th>Роль</th>
