@@ -1,0 +1,1 @@
+INSERT INTO elibraries.usr (id, active, password, username) VALUES (1, true, '35', 'skorp');

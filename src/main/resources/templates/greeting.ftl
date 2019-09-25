@@ -4,6 +4,9 @@
 
 <@p.main "Главная страница">
     <#if isLogged>
+    <#if birthdateError??>
+        ${birthdateError}
+    </#if>
         <a class="btn btn-secondary" data-toggle="collapse" href="#addReader" role="button" aria-expanded="false" aria-controls="addReader">
             Добавить читателя
         </a>
@@ -15,13 +18,14 @@
                 <div class="form-group row">
                     <label for="fio" class="col-sm-2 col-form-label">FIO</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" name="fio" id="fio" />
+                        <input type="text" class="form-control"  name="fio" id="fio" />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="birthdate" class="col-sm-2 col-form-label">Birthdate</label>
                     <div class="col-sm-5">
-                        <input type="date" class="form-control" name="birthdate" id="birthdate" />
+                        <input type="date" class="form-control " name="birthdate" id="birthdate" />
+
                     </div>
                 </div>
                 <div class="form-group row">

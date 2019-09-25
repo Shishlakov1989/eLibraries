@@ -1,5 +1,6 @@
 package ru.liplib.eLibraries.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,8 @@ import java.util.Map;
 @Controller
 public class FileUploadController {
     private String uploadPath = System.getProperty("user.dir") + "/uploads";
+    @Autowired
+    private FileUtil fileUtil;
     
     @PostMapping("/manager")
     public String uploadFile(@RequestParam("file")MultipartFile file, Model model) {
@@ -28,7 +31,7 @@ public class FileUploadController {
                 File uploadFile = new File(fileName);
                 file.transferTo(uploadFile);
                 model.addAttribute("message", "Файл загружен");
-                FileUtil.addAccounts(fileName);
+                fileUtil.addAccounts(fileName);
 
                 uploadFile.delete();
             } catch (IOException e) {

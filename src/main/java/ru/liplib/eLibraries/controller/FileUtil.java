@@ -1,27 +1,107 @@
 package ru.liplib.eLibraries.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import ru.liplib.eLibraries.model.LitresAcc;
+import ru.liplib.eLibraries.model.Person;
+import ru.liplib.eLibraries.repository.LitresRepository;
+import ru.liplib.eLibraries.repository.PersonRepository;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+@Controller
 public class FileUtil {
-    static void addAccounts(String filename) {
+    @Autowired
+    private LitresRepository litresRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    void addAccounts(String filename) {
         List<String> strings = readFile(filename);
 
         if (strings == null) {
+            return;
+        }
 
+        for (String str: strings) {
+            String[] parts = str.split("\t");
+            System.out.println(parts.length);
+            LitresAcc litres;
+            Person person;
+
+            switch (parts.length) {
+                case 2:
+                    litres = new LitresAcc(parts[0], parts[1]);
+                    litresRepository.save(litres);
+                    litres = null;
+                    break;
+                case 3:
+                    break;
+                case 6:
+                    litres = new LitresAcc(parts[0], parts[1]);
+                    person = new Person();
+
+                    if (!parts[2].equals("-")) {
+                        person.setFio(parts[2]);
+                    }
+
+                    if (!parts[3].equals("-"))
+                        person.setBirthdate(parseDate(parts[3]));
+
+                    if (!parts[4].equals("-")) {
+                        String temp = parts[4];
+
+                        try {
+                            litres.setFilial(Integer.parseInt(temp));
+                        } catch (NumberFormatException e) {
+                            litres.setFilial(setLibrary(temp));
+                        }
+                    }
+
+                    if (!parts[5].equals("-")) {
+                        litres.setDateOfIssue(parseDate(parts[5]));
+                    }
+
+                    litres.setIssued(true);
+
+                    litresRepository.save(litres);
+
+                    person.setLitres(litres);
+
+                    personRepository.save(person);
+
+                    litres = null;
+                    person = null;
+                    break;
+                case 7:
+                    break;
+            }
         }
     }
 
-    private static List<String> readFile(String filename) {
+    private List<String> readFile(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))){
             List<String> strings = new ArrayList<>();
 
             while (reader.ready()) {
-                strings.add(reader.readLine());
+                String temp = reader.readLine();
+
+                if (!Character.isDigit(temp.charAt(0))) {
+                    temp = temp.substring(1);
+                }
+
+                strings.add(temp);
             }
 
             System.out.println("Прочитано " + strings.size() + " строк");
@@ -34,5 +114,67 @@ public class FileUtil {
         }
 
         return null;
+    }
+
+    private Date parseDate(String str) {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
+        try {
+            if (str.length() == 4) {
+                java.util.Date date = format.parse("01.01." + str);
+
+                return new Date(date.getTime());
+            } else {
+                java.util.Date date = format.parse(str);
+
+                return new Date(date.getTime());
+            }
+        } catch (ParseException e) {
+
+        }
+
+        return null;
+    }
+
+    private int setLibrary(String str) {
+        str = str.toLowerCase();
+
+        if (str.contains("бунин"))
+            return 1;
+        else if (str.contains("смургис"))
+            return 3;
+        else if (str.contains("бартен"))
+            return 5;
+        else if (str.contains("социал"))
+            return 4;
+        else if (str.contains("рудн"))
+            return 9;
+        else if (str.contains("левобер"))
+            return 10;
+        else if (str.contains("стш") || str.contains("семен"))
+            return 6;
+        else if (str.contains("нк") || str.contains("культ"))
+            return 7;
+        else if (str.contains("бсч"))
+            return 25;
+        else if (str.contains("виб") || str.contains("водоп"))
+            return 2;
+        else if (str.contains("дачн"))
+            return 8;
+        else if (str.contains("матыр"))
+            return 17;
+        else if (str.contains("сокол"))
+            return 11;
+        else if (str.contains("эрудит"))
+            return 21;
+        else if (str.contains("солнеч"))
+            return 1;
+        else if (str.contains("преобр"))
+            return 19;
+        else if (str.contains("цгб") || str.contains("есенин"))
+            return 26;
+        else if (str.contains("цгдб") || str.contains("пришв"))
+            return 27;
+        else
+            return -1;
     }
 }

@@ -1,6 +1,8 @@
 package ru.liplib.eLibraries.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -9,14 +11,12 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Not be empty")
     private String fio;
+    @NotNull(message = "Not be null")
     private Date birthdate;
     private String hasLitres;
     private String hasNonfiction;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User librarian;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "litres_id")
@@ -25,12 +25,11 @@ public class Person {
     public Person() {
     }
 
-    public Person(String fio, Date birthdate, String hasLitres, String hasNonfiction, User user) {
+    public Person(String fio, Date birthdate, String hasLitres, String hasNonfiction) {
         this.fio = fio;
         this.birthdate = birthdate;
         this.hasLitres = hasLitres;
         this.hasNonfiction = hasNonfiction;
-        this.librarian = user;
     }
 
     public Long getId() {
@@ -73,23 +72,11 @@ public class Person {
         this.hasNonfiction = hasNonfiction;
     }
 
-    public User getLibrarian() {
-        return librarian;
-    }
-
-    public void setLibrarian(User librarian) {
-        this.librarian = librarian;
-    }
-
     public LitresAcc getLitres() {
         return litres;
     }
 
     public void setLitres(LitresAcc litres) {
         this.litres = litres;
-    }
-
-    public String librarianName() {
-        return librarian != null ? librarian.getUsername() : "<none>";
     }
 }

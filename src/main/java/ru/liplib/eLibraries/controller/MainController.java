@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +12,7 @@ import ru.liplib.eLibraries.model.Person;
 import ru.liplib.eLibraries.model.User;
 import ru.liplib.eLibraries.repository.PersonRepository;
 
-import java.sql.Date;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -38,13 +39,17 @@ public class MainController {
     @PostMapping("/addReader")
     public String addPerson(
             @AuthenticationPrincipal User user,
-            @RequestParam String fio,
-            @RequestParam Date birthdate,
-            @RequestParam (required = false) String hasLitres,
-            @RequestParam (required = false) String hasNonfiction,
-            Map<String, Object> model) {
-        Person person = new Person(fio, birthdate, hasLitres, hasNonfiction, user);
-        personRepository.save(person);
+            @Valid Person person,
+            BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtil.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("person", person);
+        } else {
+            personRepository.save(person);
+            model.addAttribute("person", null);
+        }
 
         return "redirect:/";
     }

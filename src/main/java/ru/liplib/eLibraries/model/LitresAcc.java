@@ -17,6 +17,16 @@ public class LitresAcc {
     private boolean issued;
     private Date dateOfIssue;
     private int filial;
+    private boolean valid;
+
+    public LitresAcc() {
+    }
+
+    public LitresAcc(String login, String password) {
+        this.login = login;
+        this.password = password;
+        valid = true;
+    }
 
     public Long getId() {
         return id;
@@ -64,5 +74,13 @@ public class LitresAcc {
 
     public void setFilial(int filial) {
         this.filial = filial;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        valid = valid;
     }
 }
