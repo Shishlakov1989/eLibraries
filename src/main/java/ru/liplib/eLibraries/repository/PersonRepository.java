@@ -6,5 +6,5 @@ import ru.liplib.eLibraries.model.Person;
 import java.util.List;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
-    List<Person> findByFio (String fio);
+    List<Person> findBySurname (String surname);
 }

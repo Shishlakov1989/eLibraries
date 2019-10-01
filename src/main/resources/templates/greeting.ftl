@@ -4,9 +4,6 @@
 
 <@p.main "Главная страница">
     <#if isLogged>
-    <#if birthdateError??>
-        ${birthdateError}
-    </#if>
         <a class="btn btn-secondary" data-toggle="collapse" href="#addReader" role="button" aria-expanded="false" aria-controls="addReader">
             Добавить читателя
         </a>
@@ -14,25 +11,41 @@
             Найти читателя
         </a>
         <div class="collapse mt-5" id="addReader">
-            <form action="/addReader" method="post">
+            <form method="post">
                 <div class="form-group row">
-                    <label for="fio" class="col-sm-2 col-form-label">FIO</label>
+                    <label for="surname" class="col-sm-2 col-form-label">Фамилия</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control"  name="fio" id="fio" />
+                        <input type="text" class="form-control"  name="surname" id="surname" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Имя</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control"  name="name" id="name" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="patronymic" class="col-sm-2 col-form-label">Отчество</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control"  name="patronymic" id="patronymic" />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="birthdate" class="col-sm-2 col-form-label">Birthdate</label>
                     <div class="col-sm-5">
-                        <input type="date" class="form-control " name="birthdate" id="birthdate" />
-
+                        <input type="date" class="form-control ${(birthdateError??)?string('is-invalid','')}" name="birthdate" id="birthdate" />
+                        <#if birthdateError??>
+                            <div class="invalid-feedback">
+                                  ${birthdateError}
+                            </div>
+                        </#if>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-2">Litres</div>
                     <div class="col-sm-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="hasLitres" id="hasLitres" />
+                            <input class="form-check-input" type="checkbox" name="giveLitres" id="giveLitres" />
                         </div>
                     </div>
                 </div>
@@ -40,7 +53,7 @@
                     <div class="col-sm-2">Non-fiction</div>
                     <div class="col-sm-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="hasNonfiction" id="hasNonfiction" />
+                            <input class="form-check-input" type="checkbox" name="giveNonfiction" id="giveNonfiction" />
                         </div>
                     </div>
                 </div>
@@ -68,7 +81,7 @@
                 <tbody>
                     <#list persons as person>
                     <tr>
-                        <td>${person.fio}</td>
+                        <td>${person.surname} ${person.name} ${person.patronymic}</td>
                         <td>${person.birthdate}</td>
                         <td>
                             <#if person.litres??>
@@ -90,6 +103,6 @@
             </table>
         </#if>
     <#else>
-        <@l.login />
+        <a href="/login" class="btn btn-secondary">Авторизация</a>
     </#if>
 </@p.main>

@@ -53,7 +53,32 @@ public class FileUtil {
                     person = new Person();
 
                     if (!parts[2].equals("-")) {
-                        person.setFio(parts[2]);
+                        String[] fio = parts[2].split(" ");
+
+                        switch (fio.length) {
+                            case 1:
+                                person.setSurname(fio[0]);
+                                break;
+                            case 2:
+                                person.setSurname(fio[0]);
+
+                                if (fio[1].contains(".")) {
+                                    String[] io = fio[1].split(".");
+
+                                    if (io.length == 1) {
+                                        person.setName(io[0]);
+                                        person.setPatronymic("none");
+                                    } else {
+                                        person.setName(io[0]);
+                                        person.setPatronymic(io[1]);
+                                    }
+                                }
+                                break;
+                            case 3:
+                                person.setSurname(fio[0]);
+                                person.setName(fio[1]);
+                                person.setPatronymic(fio[2]);
+                        }
                     }
 
                     if (!parts[3].equals("-"))

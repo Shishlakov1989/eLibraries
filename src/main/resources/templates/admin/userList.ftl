@@ -18,7 +18,11 @@
             <tr>
                 <td>${user.username}</td>
                 <td><#list user.roles as role>${role}<#sep>, </#list></td>
-                <td><a href="/user/${user.id}">Редактировать</a></td>
+                <td>
+                    <a href="/user/${user.id}">Редактировать</a>
+                    <br/>
+                    <a href="/user/delete/${user.id}">Удалить</a>
+                </td>
             </tr>
             </#list>
         </tbody>

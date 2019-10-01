@@ -34,6 +34,13 @@ public class UserController {
         return "admin/userEdit";
     }
 
+    @GetMapping("delete/{user}")
+    public String deleteUser(@PathVariable User user) {
+        userRepository.delete(user);
+
+        return "redirect:/user";
+    }
+
     @PostMapping
     public String userSave(
             @RequestParam String username,

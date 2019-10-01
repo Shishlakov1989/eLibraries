@@ -1,8 +1,6 @@
 package ru.liplib.eLibraries.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -11,25 +9,27 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Not be empty")
-    private String fio;
-    @NotNull(message = "Not be null")
+    private String surname;
+    private String name;
+    private String patronymic;
     private Date birthdate;
-    private String hasLitres;
-    private String hasNonfiction;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "litres_id")
     private LitresAcc litres;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nonfiction_id")
+    private Nonfiction nonfiction;
+
     public Person() {
     }
 
-    public Person(String fio, Date birthdate, String hasLitres, String hasNonfiction) {
-        this.fio = fio;
+    public Person(String surname, String name, String patronymic, Date birthdate) {
+        this.surname = surname;
+        this.name = name;
+        this.patronymic = patronymic;
         this.birthdate = birthdate;
-        this.hasLitres = hasLitres;
-        this.hasNonfiction = hasNonfiction;
     }
 
     public Long getId() {
@@ -40,12 +40,28 @@ public class Person {
         this.id = id;
     }
 
-    public String getFio() {
-        return fio;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setFio(String fio) {
-        this.fio = fio;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
     }
 
     public Date getBirthdate() {
@@ -54,22 +70,6 @@ public class Person {
 
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
-    }
-
-    public String getHasLitres() {
-        return hasLitres;
-    }
-
-    public void setHasLitres(String hasLitres) {
-        this.hasLitres = hasLitres;
-    }
-
-    public String getHasNonfiction() {
-        return hasNonfiction;
-    }
-
-    public void setHasNonfiction(String hasNonfiction) {
-        this.hasNonfiction = hasNonfiction;
     }
 
     public LitresAcc getLitres() {
