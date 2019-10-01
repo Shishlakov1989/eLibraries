@@ -23,8 +23,6 @@ import java.util.Map;
 public class MainController {
     @Autowired
     private PersonRepository personRepository;
-    @Autowired
-    private FileUtil fileUtil;
 
     @GetMapping("/")
     public String greeting(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
@@ -45,10 +43,12 @@ public class MainController {
     @PostMapping("/")
     public String addPerson(
             @AuthenticationPrincipal User user,
-            @ModelAttribute PersonForm form,
+            @Valid PersonForm form,
+            BindingResult bindingResult,
             Model model) {
         if (ControllerUtil.validAddReader(form, model)) {
-
+            Person person = new Person(form.getSurname(), form.getName(), form.getPatronymic(), form.getBirthdate());
+            personRepository.save(person);
         }
 
         model.addAttribute("persons", personRepository.findAll());
@@ -59,18 +59,5 @@ public class MainController {
     @GetMapping("/manager")
     public String managerPage(Map<String, Object> model) {
         return "admin/manager";
-    }
-
-    private Date parseDate(String str) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        try {
-            java.util.Date date = format.parse(str);
-
-            return new Date(date.getTime());
-        } catch (ParseException e) {
-
-        }
-
-        return null;
     }
 }
