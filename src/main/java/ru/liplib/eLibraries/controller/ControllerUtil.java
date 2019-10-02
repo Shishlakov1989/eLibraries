@@ -1,86 +1,103 @@
 package ru.liplib.eLibraries.controller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import ru.liplib.eLibraries.model.Person;
 import ru.liplib.eLibraries.model.PersonForm;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class ControllerUtil {
-    static boolean validAddReader(
-            PersonForm personForm,
-            Model model)
-    {
-        boolean valid = true;
+    static Map<String, String> getErrors(BindingResult bindingResult) {
+        Collector<FieldError, ?, Map<String, String>> collector = Collectors.toMap(
+                fieldError -> fieldError.getField() + "Error",
+                FieldError::getDefaultMessage
+        );
 
-        /*if (!form.containsKey("giveLitres") & !form.containsKey("giveNonfiction")) {
-            valid = false;
-            model.addAttribute("accountsError", "Не выбраны желаемые электронные библиотеки");
+        return bindingResult.getFieldErrors().stream().collect(collector);
+    }
+
+    static Map<String, String> checkForm(PersonForm form) {
+        Map<String, String> errors = new HashMap<>();
+
+        String surname = form.getSurname();
+        surname = surname.trim();
+        surname = surname.replace('ё', 'е');
+
+        if (surname.length() < 2 || surname.length() > 20) {
+            errors.put("surnameError", "Данное поле должно содержать от 2 до 20 символов");
+        } else if (surname.contains(".") || surname.contains(",")) {
+            errors.put("surnameError", "Данное поле не должно содержать специальных символов");
         }
 
-        for (Map.Entry pair: form.entrySet()) {
-            String key = (String) pair.getKey();
-            String value;
+        String name = form.getName();
+        name = name.trim();
+        name = name.replace('ё', 'е');
 
-            switch (key) {
-                case "surname":
-                    value = (String) pair.getValue();
-                    value = value.trim();
+        if (name.length() < 2 || name.length() > 10) {
+            errors.put("nameError", "Данное поле должно содержать от 2 до 10 символов");
+        } else if (name.contains(".") || name.contains(",")) {
+            errors.put("nameError", "Данное поле не должно содержать специальных символов");
+        }
 
-                    if (value == null || value.isEmpty()) {
-                        valid = false;
-                        model.addAttribute(key + "Error", "Поле обязательно для заполнения");
-                    } else if (value.length() < 2 || value.length() > 20) {
-                        model.addAttribute(key + "Error", "Длина поля должна быть от 2 до 20 символов");
-                    }
+        String patronymic = form.getPatronymic();
+        patronymic = patronymic.trim();
+        patronymic = patronymic.replace('ё', 'е');
 
-                    break;
-                case "name":
-                    value = (String) pair.getValue();
-                    value = value.trim();
+        if (patronymic.length() < 2 || patronymic.length() > 15) {
+            errors.put("patronymicError", "Данное поле должно содержать от 2 до 15 символов");
+        } else if (patronymic.contains(".") || patronymic.contains(",")) {
+            errors.put("patronymicError", "Данное поле не должно содержать специальных символов");
+        }
 
-                    if (value == null || value.isEmpty()) {
-                        valid = false;
-                        model.addAttribute(key + "Error", "Поле обязательно для заполнения");
-                    } else if (value.length() < 2 || value.length() > 10) {
-                        model.addAttribute(key + "Error", "Длина поля должна быть от 2 до 10 символов");
-                    } else if (value.contains(".")) {
-                        valid = false;
-                        model.addAttribute(key + "Error", "Поле содержит недопустимые символы (сокращения запрещены)");
-                    }
+        String birthdate = form.getBirthdate();
 
-                    break;
-                case "patronymic":
-                    value = (String) pair.getValue();
-                    value = value.trim();
+        if (birthdate == null || birthdate.isEmpty()) {
+            errors.put("birthdateError", "Данное поле обязательно для заполнения");
+        } else {
+            Date date = parseDate(birthdate);
 
-                    if (value == null || value.isEmpty()) {
-                        valid = false;
-                        model.addAttribute(key + "Error", "Поле обязательно для заполнения");
-                    } else if (value.length() < 2 || value.length() > 15) {
-                        valid = false;
-                        model.addAttribute(key + "Error", "Длина поля должна быть от 2 до 15 символов");
-                    } else if (value.contains(".")) {
-                        valid = false;
-                        model.addAttribute(key + "Error", "Поле содержит недопустимые символы (сокращения запрещены)");
-                    }
+            if (date == null) {
+                errors.put("birthdateError", "Проверьте правильность даты рождения");
+            } else
+                form.setBirthday(date);
+        }
 
-                    break;
-                case "birthdate":
-                    value = (String) pair.getValue();
+        if ((form.getGiveLitres() == null || form.getGiveLitres().isEmpty()) &&
+                (form.getGiveNonfiction() == null || form.getGiveNonfiction().isEmpty())) {
+            errors.put("accountsError", "Выберите электронную библиотеку для выдачи логина");
+        }
 
-                    if (value == null || value.isEmpty()) {
-                        valid = false;
-                        model.addAttribute(key + "Error", "Поле обязательно для заполнения");
-                    }
+        return errors;
+    }
 
-                    break;
-            }
-        }*/
+    private static Date parseDate(String str) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        try {
+            java.util.Date date = format.parse(str);
 
-        return valid;
+            return new Date(date.getTime());
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    public static PersonForm convertToForm(Person person) {
+        PersonForm form = new PersonForm();
+
+        String[] fio = person.getFio().split(" ");
+        form.setSurname(fio[0]);
+        form.setName(fio[1]);
+        form.setPatronymic(fio[2]);
+
+        return form;
     }
 }

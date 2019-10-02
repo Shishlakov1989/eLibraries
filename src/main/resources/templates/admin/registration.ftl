@@ -3,7 +3,7 @@
 
 <@p.main "Регистрация">
     <#if (message?exists)>
-        ${message}
+        <div class="text-nowrap mb-4">${message}</div>
     </#if>
     <@l.registration/>
 </@p.main>

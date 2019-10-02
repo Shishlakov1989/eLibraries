@@ -1,11 +1,7 @@
 package ru.liplib.eLibraries.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Date;
 
@@ -14,17 +10,22 @@ public class PersonForm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank(message = "Данное поле не может быть пустым")
-    @Size(min = 2, max = 20, message = "Данное поле должно содержать от 2 до 20 символов")
+
+//    @NotBlank(message = "Данное поле не может быть пустым")
+//    @Size(min = 2, max = 20, message = "Данное поле должно содержать от 2 до 20 символов")
     private String surname;
-    @NotBlank(message = "Данное поле не может быть пустым")
-    @Size(min = 2, max = 10, message = "Данное поле должно содержать от 2 до 10 символов")
+
+//    @NotBlank(message = "Данное поле не может быть пустым")
+//    @Size(min = 2, max = 10, message = "Данное поле должно содержать от 2 до 10 символов (возможно использованы недопустимые символы)")
     private String name;
-    @NotBlank(message = "Данное поле не может быть пустым")
-    @Size(min = 2, max = 15, message = "Данное поле должно содержать от 2 до 15 символов")
+
+//    @NotBlank(message = "Данное поле не может быть пустым")
+//    @Size(min = 2, max = 15, message = "Данное поле должно содержать от 2 до 15 символов (возможно использованы недопустимые символы)")
     private String patronymic;
-    @NotNull(message = "Данное поле обязательно для заполнения")
-    private Date birthdate;
+
+    private String birthdate;
+    @Transient
+    private Date birthday;
     private String giveLitres;
     private String giveNonfiction;
 
@@ -60,12 +61,20 @@ public class PersonForm {
         this.patronymic = patronymic;
     }
 
-    public Date getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getGiveLitres() {
@@ -82,5 +91,9 @@ public class PersonForm {
 
     public void setGiveNonfiction(String giveNonfiction) {
         this.giveNonfiction = giveNonfiction;
+    }
+
+    public String getFio() {
+        return this.surname + " " + this.name + " " + this.patronymic;
     }
 }

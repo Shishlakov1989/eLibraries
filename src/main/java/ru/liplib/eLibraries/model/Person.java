@@ -9,9 +9,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String surname;
-    private String name;
-    private String patronymic;
+    private String fio;
     private Date birthdate;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -20,16 +18,14 @@ public class Person {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nonfiction_id")
-    private Nonfiction nonfiction;
+    private NonfictionAcc nonfiction;
 
     public Person() {
     }
 
-    public Person(String surname, String name, String patronymic, Date birthdate) {
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.birthdate = birthdate;
+    public Person(PersonForm personForm) {
+        this.fio = personForm.getFio();
+        this.birthdate = personForm.getBirthday();
     }
 
     public Long getId() {
@@ -40,28 +36,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getFio() {
+        return fio;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 
     public Date getBirthdate() {
@@ -78,5 +58,13 @@ public class Person {
 
     public void setLitres(LitresAcc litres) {
         this.litres = litres;
+    }
+
+    public NonfictionAcc getNonfiction() {
+        return nonfiction;
+    }
+
+    public void setNonfiction(NonfictionAcc nonfiction) {
+        this.nonfiction = nonfiction;
     }
 }
