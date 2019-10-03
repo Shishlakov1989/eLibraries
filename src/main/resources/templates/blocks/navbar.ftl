@@ -14,7 +14,7 @@
             </li>
             <#if isAdmin>
                 <li class="nav-item">
-                    <a class="nav-link" href="/users">Список пользователей</a>
+                    <a class="nav-link" href="/user">Список пользователей</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/statistic">Статистика</a>

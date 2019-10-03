@@ -1,7 +1,7 @@
 <#import "../blocks/page.ftl" as p>
 
 <@p.main "Редактирование пользователя ${user.username}">
-    <form action="/users" method="post">
+    <form action="/user" method="post">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Имя пользователя: </label>
             <div class="col-sm-4">

@@ -2,6 +2,7 @@ package ru.liplib.eLibraries.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +16,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public String userList(Model model) {
@@ -40,7 +43,7 @@ public class UserController {
     public String deleteUser(@PathVariable User user) {
         userRepository.delete(user);
 
-        return "redirect:/users";
+        return "redirect:/user";
     }
 
     @PostMapping
@@ -56,7 +59,7 @@ public class UserController {
         user.setFilial(filial);
 
         if (!password.isEmpty() || password.hashCode() != 0) {
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         Set<String> roles = Arrays.stream(Role.values())
@@ -73,6 +76,6 @@ public class UserController {
 
         userRepository.save(user);
 
-        return "redirect:/users";
+        return "redirect:/user";
     }
 }
