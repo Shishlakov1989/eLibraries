@@ -10,25 +10,57 @@
         <a class="btn btn-info ml-4" data-toggle="collapse" href="#findReader" role="button" aria-expanded="false" aria-controls="findReader">
             Найти читателя
         </a>
-        <div class="collapse mt-5" id="addReader">
-            <form action="/readers" method="post">
+        <div class="collapse mt-5 <#if form??>show</#if>" id="addReader">
+            <form method="post">
                 <div class="form-group row">
-                    <label for="fio" class="col-sm-2 col-form-label">FIO</label>
+                    <label for="surname" class="col-sm-2 col-form-label">Фамилия</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" name="fio" id="fio" />
+                        <input type="text" class="form-control ${(surnameError??)?string('is-invalid','')}" <#if form??>value="${form.surname}"</#if> name="surname" id="surname" />
+                        <#if surnameError??>
+                            <div class="invalid-feedback">
+                                ${surnameError}
+                            </div>
+                        </#if>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Имя</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control ${(nameError??)?string('is-invalid','')}" <#if form??>value="${form.name}"</#if>  name="name" id="name" />
+                        <#if nameError??>
+                            <div class="invalid-feedback">
+                                ${nameError}
+                            </div>
+                        </#if>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="patronymic" class="col-sm-2 col-form-label">Отчество</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control ${(patronymicError??)?string('is-invalid','')}" <#if form??>value="${form.patronymic}"</#if>  name="patronymic" id="patronymic" />
+                        <#if patronymicError??>
+                            <div class="invalid-feedback">
+                                ${patronymicError}
+                            </div>
+                        </#if>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="birthdate" class="col-sm-2 col-form-label">Birthdate</label>
                     <div class="col-sm-5">
-                        <input type="date" class="form-control" name="birthdate" id="birthdate" />
+                        <input type="date" class="form-control ${(birthdateError??)?string('is-invalid','')}" name="birthdate" id="birthdate" value="2019-04-01" />
+                        <#if birthdateError??>
+                            <div class="invalid-feedback">
+                                  ${birthdateError}
+                            </div>
+                        </#if>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-2">Litres</div>
                     <div class="col-sm-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="hasLitres" id="hasLitres" />
+                            <input class="form-check-input ${(accountsError??)?string('is-invalid','')}" type="checkbox" name="giveLitres" id="giveLitres" />
                         </div>
                     </div>
                 </div>
@@ -36,7 +68,12 @@
                     <div class="col-sm-2">Non-fiction</div>
                     <div class="col-sm-5">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="hasNonfiction" id="hasNonfiction" />
+                            <input class="form-check-input ${(accountsError??)?string('is-invalid','')}" type="checkbox" name="giveNonfiction" id="giveNonfiction" />
+                            <#if accountsError??>
+                                <div class="invalid-feedback">
+                                    ${accountsError}
+                                </div>
+                            </#if>
                         </div>
                     </div>
                 </div>
@@ -45,9 +82,11 @@
             </form>
         </div>
         <div class="collapse mt-5" id="findReader">
-            <form method="get" action="/readers">
-                <input type="text" name="filter" value="${filter?ifExists}">
-                <button type="submit">Найти</button>
+            <form method="get">
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="filter" value="${filter?ifExists}">
+                    <button type="submit" class="btn btn-primary mt-3">Найти</button>
+                </div>
             </form>
         </div>
 
@@ -58,27 +97,51 @@
                         <th scope="col">ФИО</th>
                         <th scope="col">Дата рождения</th>
                         <th scope="col">Литрес</th>
+                        <th scope="col">Нон-фикшн</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <#list persons as person>
                     <tr>
-                        <td>${person.fio}</td>
-                        <td>${person.birthdate}</td>
+                        <td>
+                            <#if person.fio??>
+                                ${person.fio}
+                            <#else>
+                                Нет данных
+                            </#if>
+                        </td>
+                        <td>
+                            <#if person.birthdate??>
+                                ${person.birthdate}
+                            <#else>
+                                Нет данных
+                            </#if>
+                        </td>
                         <td>
                             <#if person.litres??>
-                                <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <a data-toggle="collapse" href="#lrcollapseExample${person.id}" role="button" aria-expanded="false" aria-controls="lrcollapseExample${person.id}">
                                     ${person.litres.login}
                                 </a>
-                                <div class="collapse" id="collapseExample">
+                                <div class="collapse" id="lrcollapseExample${person.id}">
                                     ${person.litres.password}
                                 </div>
                             <#else>
                                 Отсутствует
                             </#if>
                         </td>
-
+                        <td>
+                            <#if person.nonfiction??>
+                                <a data-toggle="collapse" href="#nfcollapseExample${person.id}" role="button" aria-expanded="false" aria-controls="nfcollapseExample${person.id}">
+                                    ${person.nonfiction.login}
+                                </a>
+                                <div class="collapse" id="nfcollapseExample${person.id}">
+                                    ${person.nonfiction.password}
+                                </div>
+                            <#else>
+                                Отсутствует
+                            </#if>
+                        </td>
                         <td><a href="/person/${person.id}">Редактировать</a></td>
                     </tr>
                     </#list>
@@ -86,6 +149,6 @@
             </table>
         </#if>
     <#else>
-        <@l.login />
+        <a href="/login" class="btn btn-secondary">Авторизация</a>
     </#if>
 </@p.main>

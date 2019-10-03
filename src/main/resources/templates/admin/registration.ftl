@@ -2,7 +2,7 @@
 <#import "../blocks/login.ftl" as l>
 
 <@p.main "Регистрация">
-    <#if (message?exists)>
+    <#if (message??)>
         <div class="text-nowrap mb-4">${message}</div>
     </#if>
     <@l.registration/>

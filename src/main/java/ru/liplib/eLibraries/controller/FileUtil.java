@@ -3,8 +3,10 @@ package ru.liplib.eLibraries.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.liplib.eLibraries.model.LitresAcc;
+import ru.liplib.eLibraries.model.NonfictionAcc;
 import ru.liplib.eLibraries.model.Person;
 import ru.liplib.eLibraries.repository.LitresRepository;
+import ru.liplib.eLibraries.repository.NonfictionRepository;
 import ru.liplib.eLibraries.repository.PersonRepository;
 
 import java.io.BufferedReader;
@@ -23,7 +25,8 @@ import java.util.Locale;
 public class FileUtil {
     @Autowired
     private LitresRepository litresRepository;
-
+    @Autowired
+    private NonfictionRepository nonfictionRepository;
     @Autowired
     private PersonRepository personRepository;
 
@@ -36,8 +39,8 @@ public class FileUtil {
 
         for (String str: strings) {
             String[] parts = str.split("\t");
-            System.out.println(parts.length);
             LitresAcc litres;
+            NonfictionAcc nonfiction;
             Person person;
 
             switch (parts.length) {
@@ -47,6 +50,9 @@ public class FileUtil {
                     litres = null;
                     break;
                 case 3:
+                    nonfiction = new NonfictionAcc(parts[0], parts[1], parts[2]);
+                    nonfictionRepository.save(nonfiction);
+                    nonfiction = null;
                     break;
                 case 6:
                     litres = new LitresAcc(parts[0], parts[1]);

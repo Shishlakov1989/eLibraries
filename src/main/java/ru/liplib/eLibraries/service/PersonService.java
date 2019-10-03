@@ -2,10 +2,8 @@ package ru.liplib.eLibraries.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.liplib.eLibraries.model.LitresAcc;
-import ru.liplib.eLibraries.model.Person;
-import ru.liplib.eLibraries.model.PersonForm;
-import ru.liplib.eLibraries.model.User;
+import ru.liplib.eLibraries.controller.ControllerUtil;
+import ru.liplib.eLibraries.model.*;
 import ru.liplib.eLibraries.repository.PersonRepository;
 
 import java.util.List;
@@ -14,11 +12,16 @@ import java.util.List;
 public class PersonService {
     @Autowired
     private PersonRepository personRepository;
-
     @Autowired
     private LitresService litresService;
+    @Autowired
+    private NonfictionService nonfictionService;
 
     public String save(PersonForm personform, User user) {
+        if (personform.getBirthday() == null && personform.getBirthdate() != null) {
+            personform.setBirthday(ControllerUtil.parseDate(personform.getBirthdate()));
+        }
+
         Person person = new Person(personform);
 
         List<Person> list = personRepository.findByFioAndBirthdate(person.getFio(), person.getBirthdate());
@@ -31,6 +34,14 @@ public class PersonService {
                     personRepository.save(person);
                 } else
                     return "Not litres";
+            }
+            if (personform.getGiveNonfiction() != null) {
+                NonfictionAcc acc = nonfictionService.giveNonfiction(user.getFilial());
+                if (acc != null) {
+                    person.setNonfiction(acc);
+                    personRepository.save(person);
+                } else
+                    return "Not nonfiction";
             }
         } else {
             person = list.get(list.size() - 1);
@@ -45,8 +56,22 @@ public class PersonService {
                         return "Not litres";
                 }
             }
+            if (personform.getGiveNonfiction() != null) {
+                NonfictionAcc acc = nonfictionService.giveNonfiction(user.getFilial());
+                if (acc != null) {
+                    person.setNonfiction(acc);
+                    personRepository.save(person);
+                } else
+                    return "Not nonfiction";
+            }
         }
 
         return person.getId().toString();
+    }
+
+    public Person getById(long id) {
+        Person person = personRepository.findById(id).get();
+
+        return person;
     }
 }

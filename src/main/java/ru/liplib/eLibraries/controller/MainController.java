@@ -24,7 +24,6 @@ import java.util.Map;
 public class MainController {
     @Autowired
     private PersonRepository personRepository;
-
     @Autowired
     private PersonService personService;
 
@@ -36,9 +35,9 @@ public class MainController {
             persons = personRepository.findByFioContaining(filter);
         } else {
             persons = personRepository.findAll();
-
-            Collections.reverse((List)persons);
         }
+
+        Collections.reverse((List)persons);
 
         model.addAttribute("persons", persons);
         model.addAttribute("filter", filter);
@@ -51,10 +50,6 @@ public class MainController {
             @AuthenticationPrincipal User user,
             @ModelAttribute PersonForm form,
             Model model) {
-//        if (bindingResult.hasErrors()) {
-//            Map<String, String> errorMap = ControllerUtil.getErrors(bindingResult);
-//
-//            model.mergeAttributes(errorMap);
         Map<String, String> err = ControllerUtil.checkForm(form);
 
         if (!err.isEmpty()) {

@@ -46,9 +46,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="birthdate" class="col-sm-2 col-form-label">Birthdate</label>
+                    <label for="birthdate" class="col-sm-2 col-form-label">Дата рождения</label>
                     <div class="col-sm-5">
-                        <input type="date" class="form-control ${(birthdateError??)?string('is-invalid','')}" name="birthdate" id="birthdate" value="2019-04-01" />
+                        <input type="date" class="form-control ${(birthdateError??)?string('is-invalid','')}" <#if form??>value="${form.birthdate}"</#if> name="birthdate" id="birthdate" />
                         <#if birthdateError??>
                             <div class="invalid-feedback">
                                   ${birthdateError}
@@ -61,6 +61,11 @@
                     <div class="col-sm-5">
                         <div class="form-check">
                             <input class="form-check-input ${(accountsError??)?string('is-invalid','')}" type="checkbox" name="giveLitres" id="giveLitres" />
+                            <#if lrError??>
+                                <div class="invalid-feedback">
+                                    ${lrError}
+                                </div>
+                            </#if>
                         </div>
                     </div>
                 </div>
@@ -72,6 +77,11 @@
                             <#if accountsError??>
                                 <div class="invalid-feedback">
                                     ${accountsError}
+                                </div>
+                            </#if>
+                            <#if nfError??>
+                                <div class="invalid-feedback">
+                                    ${nfError}
                                 </div>
                             </#if>
                         </div>

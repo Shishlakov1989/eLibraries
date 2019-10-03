@@ -12,9 +12,9 @@ public class NonfictionAcc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nfid;
     private String login;
     private String password;
-    private String nfid;
     private boolean issued;
     private Date dateOfIssue;
     private int filial;
@@ -24,10 +24,10 @@ public class NonfictionAcc {
 
     }
 
-    public NonfictionAcc(String login, String password, String nfid) {
+    public NonfictionAcc(String nfid, String login, String password) {
+        this.nfid = nfid;
         this.login = login;
         this.password = password;
-        this.nfid = nfid;
         valid = true;
     }
 

@@ -13,6 +13,12 @@ public class LitresService {
     @Autowired
     private LitresRepository litresRepository;
 
+    public LitresAcc save(LitresAcc acc) {
+
+
+        return acc;
+    }
+
     public LitresAcc giveLitres(int filial) {
         List<LitresAcc> litresAccs = litresRepository.findByIssuedFalseAndValidTrue();
 

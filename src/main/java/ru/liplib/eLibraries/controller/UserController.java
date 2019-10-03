@@ -9,11 +9,13 @@ import ru.liplib.eLibraries.model.Role;
 import ru.liplib.eLibraries.model.User;
 import ru.liplib.eLibraries.repository.UserRepository;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
     @Autowired
@@ -38,16 +40,24 @@ public class UserController {
     public String deleteUser(@PathVariable User user) {
         userRepository.delete(user);
 
-        return "redirect:/user";
+        return "redirect:/users";
     }
 
     @PostMapping
     public String userSave(
             @RequestParam String username,
+            @RequestParam(required = false) String password,
+            @RequestParam Integer filial,
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user
     ) {
         user.setUsername(username);
+
+        user.setFilial(filial);
+
+        if (!password.isEmpty() || password.hashCode() != 0) {
+            user.setPassword(password);
+        }
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
@@ -63,6 +73,6 @@ public class UserController {
 
         userRepository.save(user);
 
-        return "redirect:/user";
+        return "redirect:/users";
     }
 }
