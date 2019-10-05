@@ -8,7 +8,7 @@ import java.sql.Date;
 @Entity
 public class PersonForm {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 //    @NotBlank(message = "Данное поле не может быть пустым")

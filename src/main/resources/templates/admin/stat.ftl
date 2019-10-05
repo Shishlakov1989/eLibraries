@@ -1,7 +1,7 @@
 <#import "../blocks/page.ftl" as p>
 
 <@p.main "Статистика">
-    <h4 class="text-center mb-4">Статистика выдачи учетных данных Литрес и Нон-фикшн за выбранный период</h3>
+    <h4 class="text-center mb-4">Статистика выдачи учетных данных Литрес и Нон-фикшн за выбранный период</h4>
     <form method="post">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Начальная дата: </label>

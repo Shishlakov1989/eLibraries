@@ -1,11 +1,14 @@
 package ru.liplib.eLibraries.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +19,6 @@ import ru.liplib.eLibraries.model.User;
 import ru.liplib.eLibraries.repository.PersonRepository;
 import ru.liplib.eLibraries.service.PersonService;
 
-import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -27,20 +28,24 @@ public class MainController {
     private PersonRepository personRepository;
     @Autowired
     private PersonService personService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
-    public String greeting(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-        Iterable<Person> persons;
+    public String greeting(
+            @RequestParam(required = false, defaultValue = "") String filter,
+            Model model,
+            @PageableDefault(sort = {"id"}, size = 25, direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Person> persons;
 
         if (filter != null && !filter.isEmpty()) {
-            persons = personRepository.findByFioContaining(filter);
+            persons = personRepository.findByFioContaining(filter, pageable);
         } else {
-            persons = personRepository.findAll();
+            persons = personRepository.findAll(pageable);
         }
 
-        Collections.reverse((List)persons);
-
         model.addAttribute("persons", persons);
+        model.addAttribute("url", "/");
         model.addAttribute("filter", filter);
 
         return "greeting";
@@ -73,12 +78,7 @@ public class MainController {
             }
         }
 
-        List<Person> persons = (List) personRepository.findAll();
-
-        Collections.reverse(persons);
-        model.addAttribute("persons", persons);
-
-        return "greeting";
+        return "redirect:/";
     }
 
     @GetMapping("/manager")

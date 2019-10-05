@@ -5,9 +5,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.liplib.eLibraries.model.Person;
-import ru.liplib.eLibraries.model.PersonForm;
-import ru.liplib.eLibraries.model.User;
+import ru.liplib.eLibraries.model.*;
+import ru.liplib.eLibraries.repository.LitresRepository;
+import ru.liplib.eLibraries.repository.NonfictionRepository;
 import ru.liplib.eLibraries.repository.PersonRepository;
 import ru.liplib.eLibraries.service.PersonService;
 
@@ -18,6 +18,10 @@ import java.util.Map;
 public class PersonController {
     @Autowired
     private PersonService personService;
+    @Autowired
+    private LitresRepository litresRepository;
+    @Autowired
+    private NonfictionRepository nonfictionRepository;
 
     @GetMapping("{person}")
     public String personEditForm(@PathVariable Person person, Model model) {
@@ -66,5 +70,35 @@ public class PersonController {
         }
 
         return "redirect:/";
+    }
+
+    @PostMapping("passLR")
+    public String changeLrPass(
+            @RequestParam(required = false) Long lrId,
+            @RequestParam Long pId,
+            @RequestParam String lrPassword,
+            Model model
+            ) {
+        LitresAcc acc = litresRepository.findById(lrId).get();
+
+        acc.setPassword(lrPassword);
+        litresRepository.save(acc);
+
+        return "redirect:/person/" + pId;
+    }
+
+    @PostMapping("passNF")
+    public String changeNfPass(
+            @RequestParam(required = false) Long nfId,
+            @RequestParam Long pId,
+            @RequestParam String nfPassword,
+            Model model
+    ) {
+        NonfictionAcc acc = nonfictionRepository.findById(nfId).get();
+
+        acc.setPassword(nfPassword);
+        nonfictionRepository.save(acc);
+
+        return "redirect:/person/" + pId;
     }
 }

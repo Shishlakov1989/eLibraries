@@ -5,6 +5,13 @@ import org.springframework.stereotype.Service;
 import ru.liplib.eLibraries.model.LitresAcc;
 import ru.liplib.eLibraries.repository.LitresRepository;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.util.List;
 
@@ -34,5 +41,48 @@ public class LitresService {
 
             return acc;
         }
+    }
+
+    private byte[] encrypt(String password) {
+        try {
+            Cipher cipher = Cipher.getInstance("AES");
+            SecretKeySpec secretKey = new SecretKeySpec("p8mncs54f4a9aas6".getBytes(), "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            return cipher.doFinal(password.getBytes());
+        } catch (NoSuchAlgorithmException e) {
+
+        } catch (NoSuchPaddingException e) {
+
+        } catch (BadPaddingException e) {
+
+        } catch (IllegalBlockSizeException e) {
+
+        } catch (InvalidKeyException e) {
+
+        }
+
+        return null;
+    }
+
+    private String decrypt(byte[] pass) {
+        try {
+            Cipher cipher = Cipher.getInstance("AES");
+            SecretKeySpec secretKey = new SecretKeySpec("p8mncs54f4a9aas6".getBytes(), "AES");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+            return new String(cipher.doFinal(pass));
+        } catch (NoSuchAlgorithmException e) {
+
+        } catch (NoSuchPaddingException e) {
+
+        } catch (BadPaddingException e) {
+
+        } catch (IllegalBlockSizeException e) {
+
+        } catch (InvalidKeyException e) {
+
+        }
+
+        return null;
     }
 }

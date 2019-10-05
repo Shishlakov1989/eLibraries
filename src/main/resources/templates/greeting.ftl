@@ -1,8 +1,9 @@
-<#import "blocks/page.ftl" as p>
+<#import "blocks/page.ftl" as m>
 <#import "blocks/login.ftl" as l>
+<#import "blocks/pager.ftl" as p>
 <#include "blocks/security.ftl">
 
-<@p.main "Главная страница">
+<@m.main "Главная страница">
     <#if isLogged>
         <a class="btn btn-secondary" data-toggle="collapse" href="#addReader" role="button" aria-expanded="false" aria-controls="addReader">
             Добавить читателя
@@ -112,7 +113,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <#list persons as person>
+                    <#list persons.content as person>
                     <tr>
                         <td>
                             <#if person.fio??>
@@ -157,8 +158,9 @@
                     </#list>
                 </tbody>
             </table>
+            <@p.pager url persons />
         </#if>
     <#else>
         <a href="/login" class="btn btn-secondary">Авторизация</a>
     </#if>
-</@p.main>
+</@m.main>

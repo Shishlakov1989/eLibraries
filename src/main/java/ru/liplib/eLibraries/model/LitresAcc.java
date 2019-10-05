@@ -1,13 +1,9 @@
 package ru.liplib.eLibraries.model;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-import javax.persistence.*;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.sql.Date;
 
 @Entity
@@ -87,47 +83,4 @@ public class LitresAcc {
     public void setValid(boolean valid) {
         valid = valid;
     }
-
-    /*private byte[] encrypt(String password) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES");
-            SecretKeySpec secretKey = new SecretKeySpec("p8mncs54f4a9aas6".getBytes(), "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            return cipher.doFinal(password.getBytes());
-        } catch (NoSuchAlgorithmException e) {
-
-        } catch (NoSuchPaddingException e) {
-
-        } catch (BadPaddingException e) {
-
-        } catch (IllegalBlockSizeException e) {
-
-        } catch (InvalidKeyException e) {
-
-        }
-
-        return null;
-    }
-
-    private String decrypt(byte[] pass) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        try {
-            Cipher cipher = Cipher.getInstance("AES");
-            SecretKeySpec secretKey = new SecretKeySpec("p8mncs54f4a9aas6".getBytes(), "AES");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-
-            return new String(cipher.doFinal(pass));
-        } catch (NoSuchAlgorithmException e) {
-
-        } catch (NoSuchPaddingException e) {
-
-        } catch (BadPaddingException e) {
-
-        } catch (IllegalBlockSizeException e) {
-
-        } catch (InvalidKeyException e) {
-
-        }
-
-        return null;
-    }*/
 }

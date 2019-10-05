@@ -91,6 +91,40 @@ public class FileUtil {
                     person = null;
                     break;
                 case 7:
+                    nonfiction = new NonfictionAcc(parts[0], parts[1], parts[2]);
+                    person = new Person();
+
+                    if (!parts[2].equals("-")) {
+                        person.setFio(parts[3]);
+                    }
+
+                    if (!parts[3].equals("-"))
+                        person.setBirthdate(parseDate(parts[4]));
+
+                    if (!parts[4].equals("-")) {
+                        String temp = parts[5];
+
+                        try {
+                            nonfiction.setFilial(Integer.parseInt(temp));
+                        } catch (NumberFormatException e) {
+                            nonfiction.setFilial(setLibrary(temp));
+                        }
+                    }
+
+                    if (!parts[6].equals("-")) {
+                        nonfiction.setDateOfIssue(parseDate(parts[5]));
+                    }
+
+                    nonfiction.setIssued(true);
+
+                    nonfictionRepository.save(nonfiction);
+
+                    person.setNonfiction(nonfiction);
+
+                    personRepository.save(person);
+
+                    nonfiction = null;
+                    person = null;
                     break;
             }
         }

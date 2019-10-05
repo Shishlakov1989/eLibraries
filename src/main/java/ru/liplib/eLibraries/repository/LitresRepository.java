@@ -9,6 +9,7 @@ public interface LitresRepository extends CrudRepository<LitresAcc, Long> {
     List<LitresAcc> findByIssuedFalseAndValidTrue();
     List<LitresAcc> findByValidFalse();
     LitresAcc findByLogin(String login);
+    List<LitresAcc> findByFilial(int filial);
     List<LitresAcc> findByDateOfIssueAfter(String startDate);
     List<LitresAcc> findByDateOfIssueBefore(String endDate);
     List<LitresAcc> findByDateOfIssueBetween(String startDate, String endDate);

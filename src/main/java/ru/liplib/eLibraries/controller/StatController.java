@@ -7,9 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.liplib.eLibraries.service.LitresService;
 import ru.liplib.eLibraries.service.NonfictionService;
+import ru.liplib.eLibraries.service.StatisticService;
 
+import java.sql.Date;
 import java.util.Map;
 
 @Controller
@@ -17,9 +20,7 @@ import java.util.Map;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class StatController {
     @Autowired
-    private LitresService litresService;
-    @Autowired
-    private NonfictionService nonfictionService;
+    private StatisticService statisticService;
 
     @GetMapping
     public String statPage(Model model) {
@@ -30,7 +31,11 @@ public class StatController {
     public String viewStat(
             Map<String, String> form,
             Model model) {
+        if (form.isEmpty()) {
+            model.addAttribute("","");
+        } else {
 
+        }
 
         return "admin/stat";
     }
