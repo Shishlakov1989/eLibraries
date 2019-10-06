@@ -25,7 +25,7 @@ public class LitresAcc {
     public LitresAcc(String login, String password) {
         this.login = login;
         this.password = password;
-        valid = true;
+        this.valid = true;
     }
 
     public Long getId() {
@@ -81,6 +81,6 @@ public class LitresAcc {
     }
 
     public void setValid(boolean valid) {
-        valid = valid;
+        this.valid = valid;
     }
 }

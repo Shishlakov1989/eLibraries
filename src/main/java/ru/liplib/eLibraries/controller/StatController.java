@@ -32,9 +32,9 @@ public class StatController {
             Map<String, String> form,
             Model model) {
         if (form.isEmpty()) {
-            model.addAttribute("","");
+            model.addAttribute("empty","Не заполнено ни одно поле");
         } else {
-
+            model.mergeAttributes(statisticService.getStatistic(form));
         }
 
         return "admin/stat";

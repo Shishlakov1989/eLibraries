@@ -5,9 +5,13 @@ import org.springframework.stereotype.Controller;
 import ru.liplib.eLibraries.model.LitresAcc;
 import ru.liplib.eLibraries.model.NonfictionAcc;
 import ru.liplib.eLibraries.model.Person;
+import ru.liplib.eLibraries.model.User;
 import ru.liplib.eLibraries.repository.LitresRepository;
 import ru.liplib.eLibraries.repository.NonfictionRepository;
 import ru.liplib.eLibraries.repository.PersonRepository;
+import ru.liplib.eLibraries.service.LitresService;
+import ru.liplib.eLibraries.service.NonfictionService;
+import ru.liplib.eLibraries.service.PersonService;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -24,13 +28,13 @@ import java.util.Locale;
 @Controller
 public class FileUtil {
     @Autowired
-    private LitresRepository litresRepository;
+    private LitresService litresService;
     @Autowired
-    private NonfictionRepository nonfictionRepository;
+    private NonfictionService nonfictionService;
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
-    void addAccounts(String filename) {
+    void addAccounts(String filename, User user) {
         List<String> strings = readFile(filename);
 
         if (strings == null) {
@@ -46,12 +50,12 @@ public class FileUtil {
             switch (parts.length) {
                 case 2:
                     litres = new LitresAcc(parts[0], parts[1]);
-                    litresRepository.save(litres);
+                    litresService.save(litres);
                     litres = null;
                     break;
                 case 3:
                     nonfiction = new NonfictionAcc(parts[0], parts[1], parts[2]);
-                    nonfictionRepository.save(nonfiction);
+                    nonfictionService.save(nonfiction);
                     nonfiction = null;
                     break;
                 case 6:
@@ -60,6 +64,8 @@ public class FileUtil {
 
                     if (!parts[2].equals("-")) {
                         person.setFio(parts[2]);
+                    } else {
+                        person.setFio("<none>");
                     }
 
                     if (!parts[3].equals("-"))
@@ -81,11 +87,7 @@ public class FileUtil {
 
                     litres.setIssued(true);
 
-                    litresRepository.save(litres);
-
-                    person.setLitres(litres);
-
-                    personRepository.save(person);
+                    personService.saveFromFile(person, litres);
 
                     litres = null;
                     person = null;
@@ -117,11 +119,7 @@ public class FileUtil {
 
                     nonfiction.setIssued(true);
 
-                    nonfictionRepository.save(nonfiction);
-
-                    person.setNonfiction(nonfiction);
-
-                    personRepository.save(person);
+                    personService.saveFromFile(person, nonfiction);
 
                     nonfiction = null;
                     person = null;
@@ -137,9 +135,13 @@ public class FileUtil {
             while (reader.ready()) {
                 String temp = reader.readLine();
 
-                if (!Character.isDigit(temp.charAt(0))) {
+                while (!Character.isDigit(temp.charAt(0))) {
                     temp = temp.substring(1);
                 }
+
+                /*if (!Character.isDigit(temp.charAt(0))) {
+                    temp = temp.substring(1);
+                }*/
 
                 strings.add(temp);
             }
@@ -190,7 +192,7 @@ public class FileUtil {
             return 9;
         else if (str.contains("левобер"))
             return 10;
-        else if (str.contains("стш") || str.contains("семен"))
+        else if (str.contains("стш") || str.contains("с-т-ш") || str.contains("семен"))
             return 6;
         else if (str.contains("нк") || str.contains("культ"))
             return 7;
@@ -207,7 +209,7 @@ public class FileUtil {
         else if (str.contains("эрудит"))
             return 21;
         else if (str.contains("солнеч"))
-            return 1;
+            return 12;
         else if (str.contains("преобр"))
             return 19;
         else if (str.contains("цгб") || str.contains("есенин"))
@@ -215,6 +217,6 @@ public class FileUtil {
         else if (str.contains("цгдб") || str.contains("пришв"))
             return 27;
         else
-            return -1;
+            return 0;
     }
 }

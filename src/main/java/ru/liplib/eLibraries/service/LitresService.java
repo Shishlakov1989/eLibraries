@@ -21,9 +21,10 @@ public class LitresService {
     private LitresRepository litresRepository;
 
     public LitresAcc save(LitresAcc acc) {
+        if (litresRepository.findByLogin(acc.getLogin()) == null)
+            return litresRepository.save(acc);
 
-
-        return acc;
+        return litresRepository.findByLogin(acc.getLogin());
     }
 
     public LitresAcc giveLitres(int filial) {

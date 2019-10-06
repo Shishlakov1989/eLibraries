@@ -13,6 +13,13 @@ public class NonfictionService {
     @Autowired
     private NonfictionRepository nonfictionRepository;
 
+    public NonfictionAcc save(NonfictionAcc acc) {
+        if (nonfictionRepository.findByLogin(acc.getLogin()) == null)
+            nonfictionRepository.save(acc);
+
+        return acc;
+    }
+
     public NonfictionAcc giveNonfiction(int filial) {
         List<NonfictionAcc> nonfictionAccs = nonfictionRepository.findByIssuedFalseAndValidTrue();
 

@@ -28,7 +28,7 @@ public class NonfictionAcc {
         this.nfid = nfid;
         this.login = login;
         this.password = password;
-        valid = true;
+        this.valid = true;
     }
 
     public Long getId() {

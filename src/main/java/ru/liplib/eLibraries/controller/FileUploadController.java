@@ -1,11 +1,13 @@
 package ru.liplib.eLibraries.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import ru.liplib.eLibraries.model.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +20,10 @@ public class FileUploadController {
     private FileUtil fileUtil;
     
     @PostMapping("/manager")
-    public String uploadFile(@RequestParam("file")MultipartFile file, Model model) {
+    public String uploadFile(
+            @AuthenticationPrincipal User user,
+            @RequestParam("file")MultipartFile file,
+            Model model) {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadFolder = new File(this.uploadPath);
 
@@ -31,7 +36,7 @@ public class FileUploadController {
                 File uploadFile = new File(fileName);
                 file.transferTo(uploadFile);
                 model.addAttribute("message", "Файл загружен");
-                fileUtil.addAccounts(fileName);
+                fileUtil.addAccounts(fileName, user);
 
                 uploadFile.delete();
             } catch (IOException e) {

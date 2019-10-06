@@ -104,7 +104,8 @@ public class ControllerUtil {
                 break;
         }
 
-        form.setBirthdate(person.getBirthdate().toString());
+        if (person.getBirthdate() != null)
+            form.setBirthdate(person.getBirthdate().toString());
 
         if (person.getLitres() != null)
             form.setGiveLitres("yes");

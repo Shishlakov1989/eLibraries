@@ -94,6 +94,18 @@ public class PersonForm {
     }
 
     public String getFio() {
-        return this.surname + " " + this.name + " " + this.patronymic;
+        StringBuilder sb = new StringBuilder(this.surname);
+
+        if (!this.name.isEmpty()) {
+            sb.append(" ");
+            sb.append(this.name);
+        }
+
+        if (!this.patronymic.isEmpty()) {
+            sb.append(" ");
+            sb.append(this.patronymic);
+        }
+
+        return sb.toString();
     }
 }

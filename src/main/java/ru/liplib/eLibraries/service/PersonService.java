@@ -69,6 +69,64 @@ public class PersonService {
         return person.getId().toString();
     }
 
+    public void saveFromFile(Person person, LitresAcc litresAcc) {
+        Person p;
+        List<Person> list = personRepository.findByFioAndBirthdate(person.getFio(), person.getBirthdate());
+
+        if (person.getFio().equals("<none>") || list == null || list.size() == 0) {
+            p = person;
+            p.setLitres(litresService.save(litresAcc));
+        } else {
+            p = list.get(list.size() - 1);
+
+            if (p.getLitres() == null) {
+                p.setLitres(litresService.save(litresAcc));
+            } else {
+                LitresAcc oldAcc = p.getLitres();
+
+                oldAcc.setValid(false);
+                oldAcc.setIssued(false);
+                oldAcc.setFilial(0);
+                oldAcc.setDateOfIssue(null);
+
+                litresService.save(oldAcc);
+
+                p.setLitres(litresService.save(litresAcc));
+            }
+        }
+
+        personRepository.save(p);
+    }
+
+    public void saveFromFile(Person person, NonfictionAcc nonfictionAcc) {
+        Person p;
+        List<Person> list = personRepository.findByFioAndBirthdate(person.getFio(), person.getBirthdate());
+
+        if (person.getFio().equals("<none>") || list == null || list.size() == 0) {
+            p = person;
+            p.setNonfiction(nonfictionService.save(nonfictionAcc));
+        } else {
+            p = list.get(list.size() - 1);
+
+            if (p.getNonfiction() == null) {
+                p.setNonfiction(nonfictionService.save(nonfictionAcc));
+            } else {
+                NonfictionAcc oldAcc = p.getNonfiction();
+
+                oldAcc.setValid(false);
+                oldAcc.setIssued(false);
+                oldAcc.setFilial(0);
+                oldAcc.setDateOfIssue(null);
+
+                nonfictionService.save(oldAcc);
+
+                p.setNonfiction(nonfictionService.save(nonfictionAcc));
+            }
+        }
+
+        personRepository.save(p);
+    }
+
     public Person getById(long id) {
         Person person = personRepository.findById(id).get();
 
