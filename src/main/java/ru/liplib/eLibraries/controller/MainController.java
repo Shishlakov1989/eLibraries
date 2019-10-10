@@ -28,8 +28,6 @@ public class MainController {
     private PersonRepository personRepository;
     @Autowired
     private PersonService personService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String greeting(
@@ -55,8 +53,9 @@ public class MainController {
     public String addPerson(
             @AuthenticationPrincipal User user,
             @ModelAttribute PersonForm form,
-            Model model) {
-        Map<String, String> err = ControllerUtil.checkForm(form);
+            Model model,
+            @PageableDefault(sort = {"id"}, size = 25, direction = Sort.Direction.DESC) Pageable pageable) {
+        Map<String, String> err = ControllerUtil.checkForm(form, "add");
 
         if (!err.isEmpty()) {
             model.mergeAttributes(err);
@@ -78,7 +77,13 @@ public class MainController {
             }
         }
 
-        return "redirect:/";
+        Page<Person> persons;
+        persons = personRepository.findAll(pageable);
+
+        model.addAttribute("persons", persons);
+        model.addAttribute("url", "/");
+
+        return "greeting";
     }
 
     @GetMapping("/manager")

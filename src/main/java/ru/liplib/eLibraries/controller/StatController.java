@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.liplib.eLibraries.service.LitresService;
-import ru.liplib.eLibraries.service.NonfictionService;
 import ru.liplib.eLibraries.service.StatisticService;
 
-import java.sql.Date;
 import java.util.Map;
 
 @Controller
@@ -29,13 +26,19 @@ public class StatController {
 
     @PostMapping
     public String viewStat(
-            Map<String, String> form,
+            @RequestParam Map<String, String> form,
             Model model) {
-        if (form.isEmpty()) {
-            model.addAttribute("empty","Не заполнено ни одно поле");
-        } else {
-            model.mergeAttributes(statisticService.getStatistic(form));
-        }
+        form.remove("_csrf");
+
+        if (form.get("startDate").isEmpty())
+            form.remove("startDate");
+
+        if (form.get("endDate").isEmpty())
+            form.remove("endDate");
+
+        model.mergeAttributes(statisticService.getStatistic(form));
+        model.mergeAttributes(form);
+        model.addAttribute("table", "show");
 
         return "admin/stat";
     }

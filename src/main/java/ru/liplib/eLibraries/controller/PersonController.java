@@ -45,13 +45,13 @@ public class PersonController {
             @AuthenticationPrincipal User user,
             @ModelAttribute PersonForm form,
             Model model) {
-        Map<String, String> err = ControllerUtil.checkForm(form);
+        Map<String, String> err = ControllerUtil.checkForm(form, "edit");
 
         if (!err.isEmpty()) {
             model.mergeAttributes(err);
             model.addAttribute("form", form);
         } else {
-            String temp = personService.save(form, user);
+            String temp = personService.personEdit(form, user);
 
             switch (temp) {
                 case "Not litres":
@@ -69,7 +69,7 @@ public class PersonController {
             }
         }
 
-        return "redirect:/";
+        return "redirect:/person/" + form.getId();
     }
 
     @PostMapping("passLR")

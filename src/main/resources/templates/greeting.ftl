@@ -62,6 +62,11 @@
                     <div class="col-sm-5">
                         <div class="form-check">
                             <input class="form-check-input ${(accountsError??)?string('is-invalid','')}" type="checkbox" name="giveLitres" id="giveLitres" />
+                            <#if accountsError??>
+                                <div class="invalid-feedback">
+                                    ${accountsError}
+                                </div>
+                            </#if>
                             <#if lrError??>
                                 <div class="invalid-feedback">
                                     ${lrError}

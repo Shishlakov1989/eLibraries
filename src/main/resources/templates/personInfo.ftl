@@ -22,9 +22,9 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="birthdate" class="col-sm-2 col-form-label">Birthdate</label>
+            <label for="birthdate" class="col-sm-2 col-form-label">Дата рождения</label>
             <div class="col-sm-5">
-                <input type="date" class="form-control" name="birthdate" id="birthdate" <#if pform.birthdate??>value="${pform.birthdate}"</#if> />
+                <input type="date" class="form-control border-0" name="birthdate" id="birthdate" <#if pform.birthdate??>value="${pform.birthdate}"</#if> />
             </div>
         </div>
         <div class="form-group row">

@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ControllerUtil {
-    static Map<String, String> checkForm(PersonForm form) {
+    static Map<String, String> checkForm(PersonForm form, String action) {
         Map<String, String> errors = new HashMap<>();
 
         String surname = form.getSurname();
@@ -64,9 +64,11 @@ public class ControllerUtil {
                 form.setBirthday(date);
         }
 
-        if ((form.getGiveLitres() == null || form.getGiveLitres().isEmpty()) &&
-                (form.getGiveNonfiction() == null || form.getGiveNonfiction().isEmpty())) {
-            errors.put("accountsError", "Выберите электронную библиотеку для выдачи логина");
+        if (action.equals("add")) {
+            if ((form.getGiveLitres() == null || form.getGiveLitres().isEmpty()) &&
+                    (form.getGiveNonfiction() == null || form.getGiveNonfiction().isEmpty())) {
+                errors.put("accountsError", "Выберите электронную библиотеку для выдачи логина");
+            }
         }
 
         return errors;

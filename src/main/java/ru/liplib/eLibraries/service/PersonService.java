@@ -31,7 +31,6 @@ public class PersonService {
                 LitresAcc acc = litresService.giveLitres(user.getFilial());
                 if (acc != null) {
                     person.setLitres(acc);
-                    personRepository.save(person);
                 } else
                     return "Not litres";
             }
@@ -39,7 +38,6 @@ public class PersonService {
                 NonfictionAcc acc = nonfictionService.giveNonfiction(user.getFilial());
                 if (acc != null) {
                     person.setNonfiction(acc);
-                    personRepository.save(person);
                 } else
                     return "Not nonfiction";
             }
@@ -51,7 +49,6 @@ public class PersonService {
                     LitresAcc acc = litresService.giveLitres(user.getFilial());
                     if (acc != null) {
                         person.setLitres(acc);
-                        personRepository.save(person);
                     } else
                         return "Not litres";
                 }
@@ -60,11 +57,41 @@ public class PersonService {
                 NonfictionAcc acc = nonfictionService.giveNonfiction(user.getFilial());
                 if (acc != null) {
                     person.setNonfiction(acc);
-                    personRepository.save(person);
                 } else
                     return "Not nonfiction";
             }
         }
+
+        personRepository.save(person);
+
+        return person.getId().toString();
+    }
+
+    public String personEdit(PersonForm personform, User user) {
+        Person person = personRepository.findById(personform.getId()).get();
+
+        person.setFio(personform.getFio());
+
+        if (personform.getBirthdate() != null) {
+            person.setBirthdate(ControllerUtil.parseDate(personform.getBirthdate()));
+        }
+
+        if (personform.getGiveLitres() != null) {
+            LitresAcc acc = litresService.giveLitres(user.getFilial());
+            if (acc != null) {
+                person.setLitres(acc);
+            } else
+                return "Not litres";
+        }
+        if (personform.getGiveNonfiction() != null) {
+            NonfictionAcc acc = nonfictionService.giveNonfiction(user.getFilial());
+            if (acc != null) {
+                person.setNonfiction(acc);
+            } else
+                return "Not nonfiction";
+        }
+
+        personRepository.save(person);
 
         return person.getId().toString();
     }

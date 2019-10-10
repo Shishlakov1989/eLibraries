@@ -114,7 +114,7 @@ public class FileUtil {
                     }
 
                     if (!parts[6].equals("-")) {
-                        nonfiction.setDateOfIssue(parseDate(parts[5]));
+                        nonfiction.setDateOfIssue(parseDate(parts[6]));
                     }
 
                     nonfiction.setIssued(true);
@@ -139,9 +139,11 @@ public class FileUtil {
                     temp = temp.substring(1);
                 }
 
-                /*if (!Character.isDigit(temp.charAt(0))) {
-                    temp = temp.substring(1);
-                }*/
+                while (temp.contains("  ")){
+                    temp = temp.replace("  ", " ");
+                }
+
+                temp = temp.trim();
 
                 strings.add(temp);
             }
