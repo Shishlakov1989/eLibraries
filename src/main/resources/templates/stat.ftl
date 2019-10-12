@@ -1,4 +1,4 @@
-<#import "../blocks/page.ftl" as p>
+<#import "blocks/page.ftl" as p>
 
 <@p.main "Статистика">
     <h4 class="text-center mb-4">Статистика выдачи учетных данных Литрес и Нон-фикшн за выбранный период</h4>

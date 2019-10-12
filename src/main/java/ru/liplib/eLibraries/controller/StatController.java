@@ -14,14 +14,13 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/statistic")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class StatController {
     @Autowired
     private StatisticService statisticService;
 
     @GetMapping
     public String statPage(Model model) {
-        return "admin/stat";
+        return "stat";
     }
 
     @PostMapping
@@ -40,6 +39,6 @@ public class StatController {
         model.mergeAttributes(form);
         model.addAttribute("table", "show");
 
-        return "admin/stat";
+        return "stat";
     }
 }
