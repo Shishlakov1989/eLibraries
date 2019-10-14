@@ -70,7 +70,13 @@
                                 ${litres.password}
                             </#if>
                         </td>
-                        <td>${litres.dateOfIssue}</td>
+                        <td>
+                            <#if litres.dateOfIssue??>
+                                ${litres.dateOfIssue}
+                            <#else>
+                                Нет данных
+                            </#if>
+                        </td>
                         <td>${litres.filial}</td>
                         <#if isAdmin>
                             <td>
@@ -95,7 +101,13 @@
                                 ${nonfiction.password}
                             </#if>
                         </td>
-                        <td>${nonfiction.dateOfIssue}</td>
+                        <td>
+                            <#if nonfiction.dateOfIssue??>
+                                ${nonfiction.dateOfIssue}
+                            <#else>
+                                Нет данных
+                            </#if>
+                        </td>
                         <td>${nonfiction.filial}</td>
                         <#if isAdmin>
                             <td>

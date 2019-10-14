@@ -11,6 +11,9 @@
         <a class="btn btn-info ml-4" data-toggle="collapse" href="#findReader" role="button" aria-expanded="false" aria-controls="findReader">
             Найти читателя
         </a>
+        <a class="btn btn-info ml-4" data-toggle="collapse" href="#findaccount" role="button" aria-expanded="false" aria-controls="findaccount">
+            Найти читателя
+        </a>
         <div class="collapse mt-5 <#if form??>show</#if>" id="addReader">
             <form method="post">
                 <div class="form-group row">
@@ -105,6 +108,16 @@
                 </div>
             </form>
         </div>
+        <!--<#if isAdmin>
+            <div class="collapse mt-5" id="findAccount">
+                <form method="get">
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="login" value="${login?ifExists}">
+                        <button type="submit" class="btn btn-primary mt-3">Найти</button>
+                    </div>
+                </form>
+            </div>
+        </#if>-->
 
         <#if (persons?exists)>
             <table class="table mt-5">

@@ -12,4 +12,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     Page<Person> findAll(Pageable pageable);
     Page<Person> findByFioContaining (String fio, Pageable pageable);
     List<Person> findByFioAndBirthdate (String fio, Date birthdate);
+    Person findByLitres(Long id);
+    Person findByNonfiction(Long id);
 }

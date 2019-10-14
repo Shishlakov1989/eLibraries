@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,11 +21,15 @@ public class LitresService {
     @Autowired
     private LitresRepository litresRepository;
 
-    public LitresAcc save(LitresAcc acc) {
-        if (litresRepository.findByLogin(acc.getLogin()) == null)
+    public LitresAcc save(LitresAcc account) {
+        LitresAcc acc = litresRepository.findByLogin(account.getLogin());
+        if (acc == null) {
+            account.setEnc_pass(encrypt(account.getPassword()));
+            return litresRepository.save(account);
+        } else {
+            acc.setEnc_pass(encrypt(account.getPassword()));
             return litresRepository.save(acc);
-
-        return litresRepository.findByLogin(acc.getLogin());
+        }
     }
 
     public LitresAcc giveLitres(int filial) {
@@ -42,6 +47,23 @@ public class LitresService {
 
             return acc;
         }
+    }
+
+    public LitresAcc getById(Long id) {
+        LitresAcc acc = litresRepository.findById(id).get();
+
+        return acc;
+    }
+
+    public long findByLogin(String login) {
+        return litresRepository.findByLogin(login).getId();
+    }
+
+    public void encryptAllAccs() {
+        List<LitresAcc> accList = (List) litresRepository.findAll();
+
+        accList.forEach(litresAcc -> {litresAcc.setEnc_pass(encrypt(litresAcc.getPassword()));
+        litresRepository.save(litresAcc);});
     }
 
     private byte[] encrypt(String password) {
@@ -65,7 +87,7 @@ public class LitresService {
         return null;
     }
 
-    private String decrypt(byte[] pass) {
+    public String decrypt(byte[] pass) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             SecretKeySpec secretKey = new SecretKeySpec("p8mncs54f4a9aas6".getBytes(), "AES");

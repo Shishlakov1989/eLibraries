@@ -1,9 +1,6 @@
 package ru.liplib.eLibraries.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
@@ -14,6 +11,9 @@ public class NonfictionAcc {
 
     private String nfid;
     private String login;
+    @Column(name = "password")
+    private byte[] enc_pass;
+    @Transient
     private String password;
     private boolean issued;
     private Date dateOfIssue;
@@ -45,6 +45,14 @@ public class NonfictionAcc {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public byte[] getEnc_pass() {
+        return enc_pass;
+    }
+
+    public void setEnc_pass(byte[] enc_pass) {
+        this.enc_pass = enc_pass;
     }
 
     public String getPassword() {

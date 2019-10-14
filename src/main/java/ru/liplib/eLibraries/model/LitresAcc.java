@@ -1,9 +1,13 @@
 package ru.liplib.eLibraries.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
+import javax.persistence.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 
 @Entity
@@ -13,6 +17,9 @@ public class LitresAcc {
     private Long id;
 
     private String login;
+    @Column(name = "password")
+    private byte[] enc_pass;
+    @Transient
     private String password;
     private boolean issued;
     private Date dateOfIssue;
@@ -20,6 +27,7 @@ public class LitresAcc {
     private boolean valid;
 
     public LitresAcc() {
+
     }
 
     public LitresAcc(String login, String password) {
@@ -42,6 +50,14 @@ public class LitresAcc {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public byte[] getEnc_pass() {
+        return enc_pass;
+    }
+
+    public void setEnc_pass(byte[] enc_pass) {
+        this.enc_pass = enc_pass;
     }
 
     public String getPassword() {

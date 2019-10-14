@@ -9,6 +9,8 @@ import ru.liplib.eLibraries.model.*;
 import ru.liplib.eLibraries.repository.LitresRepository;
 import ru.liplib.eLibraries.repository.NonfictionRepository;
 import ru.liplib.eLibraries.repository.PersonRepository;
+import ru.liplib.eLibraries.service.LitresService;
+import ru.liplib.eLibraries.service.NonfictionService;
 import ru.liplib.eLibraries.service.PersonService;
 
 import java.util.Map;
@@ -19,9 +21,11 @@ public class PersonController {
     @Autowired
     private PersonService personService;
     @Autowired
-    private LitresRepository litresRepository;
-    @Autowired
     private NonfictionRepository nonfictionRepository;
+    @Autowired
+    private LitresService litresService;
+    @Autowired
+    private NonfictionService nonfictionService;
 
     @GetMapping("{person}")
     public String personEditForm(@PathVariable Person person, Model model) {
@@ -30,10 +34,12 @@ public class PersonController {
         model.addAttribute("pform", form);
 
         if (person.getLitres() != null) {
+            person.getLitres().setPassword(litresService.decrypt(person.getLitres().getEnc_pass()));
             model.addAttribute("litres", person.getLitres());
         }
 
         if (person.getNonfiction() != null) {
+            person.getNonfiction().setPassword(nonfictionService.decrypt(person.getNonfiction().getEnc_pass()));
             model.addAttribute("nonfiction", person.getNonfiction());
         }
 
@@ -79,10 +85,10 @@ public class PersonController {
             @RequestParam String lrPassword,
             Model model
             ) {
-        LitresAcc acc = litresRepository.findById(lrId).get();
+        LitresAcc acc = litresService.getById(lrId);
 
         acc.setPassword(lrPassword);
-        litresRepository.save(acc);
+        litresService.save(acc);
 
         return "redirect:/person/" + pId;
     }
@@ -94,10 +100,10 @@ public class PersonController {
             @RequestParam String nfPassword,
             Model model
     ) {
-        NonfictionAcc acc = nonfictionRepository.findById(nfId).get();
+        NonfictionAcc acc = nonfictionService.getById(nfId);
 
         acc.setPassword(nfPassword);
-        nonfictionRepository.save(acc);
+        nonfictionService.save(acc);
 
         return "redirect:/person/" + pId;
     }

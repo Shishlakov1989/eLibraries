@@ -6,6 +6,7 @@ import ru.liplib.eLibraries.controller.ControllerUtil;
 import ru.liplib.eLibraries.model.*;
 import ru.liplib.eLibraries.repository.PersonRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -158,5 +159,19 @@ public class PersonService {
         Person person = personRepository.findById(id).get();
 
         return person;
+    }
+
+    public List<Person> findByLogin(String login) {
+        List<Person> list = new ArrayList<>();
+
+        long lr = litresService.findByLogin(login);
+        long nf = nonfictionService.findByLogin(login);
+
+        if (lr > 0)
+            list.add(personRepository.findByLitres(lr));
+        if (nf > 0)
+            list.add(personRepository.findByNonfiction(nf));
+
+        return list;
     }
 }
