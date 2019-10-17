@@ -55,8 +55,8 @@ public class LitresService {
         return acc;
     }
 
-    public long findByLogin(String login) {
-        return litresRepository.findByLogin(login).getId();
+    public LitresAcc findByLogin(String login) {
+        return litresRepository.findByLogin(login);
     }
 
     public void encryptAllAccs() {

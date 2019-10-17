@@ -1,12 +1,14 @@
 package ru.liplib.eLibraries.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.liplib.eLibraries.controller.ControllerUtil;
 import ru.liplib.eLibraries.model.*;
 import ru.liplib.eLibraries.repository.PersonRepository;
 
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -161,17 +163,35 @@ public class PersonService {
         return person;
     }
 
-    public List<Person> findByLogin(String login) {
-        List<Person> list = new ArrayList<>();
+    public Page<Person> findAll(Pageable pageable) {
+        return personRepository.findAll(pageable);
+    };
 
-        long lr = litresService.findByLogin(login);
-        long nf = nonfictionService.findByLogin(login);
+    public Page<Person> findByFioContaining (String fio, Pageable pageable) {
+        return personRepository.findByFioContaining(fio, pageable);
+    };
 
-        if (lr > 0)
-            list.add(personRepository.findByLitres(lr));
-        if (nf > 0)
-            list.add(personRepository.findByNonfiction(nf));
+    public List<Person> findByFioAndBirthdate (String fio, Date birthdate) {
+        return personRepository.findByFioAndBirthdate(fio, birthdate);
+    };
 
-        return list;
+    public Page<Person> findByFioAndBirthdate (String fio, Date birthdate, Pageable pageable) {
+        return personRepository.findByFioAndBirthdate(fio, birthdate, pageable);
+    };
+
+    public Person findByLogin(String login, String electronicLibrary) {
+        Person person = null;
+        long id;
+
+        switch (electronicLibrary) {
+            case "litres":
+                person = personRepository.findByLitres(litresService.findByLogin(login));
+                break;
+            case "nonfiction":
+                person = personRepository.findByNonfiction(nonfictionService.findByLogin(login));
+                break;
+        }
+
+        return person;
     }
 }

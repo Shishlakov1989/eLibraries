@@ -54,8 +54,8 @@ public class NonfictionService {
         return acc;
     }
 
-    public long findByLogin(String login) {
-        return nonfictionRepository.findByLogin(login).getId();
+    public NonfictionAcc findByLogin(String login) {
+        return nonfictionRepository.findByLogin(login);
     }
 
     public void encryptAllAccs() {

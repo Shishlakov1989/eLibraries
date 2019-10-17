@@ -22,9 +22,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/manager">Загрузить файл</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/test">Test</a>
-                </li>
             </#if>
         </ul>
 

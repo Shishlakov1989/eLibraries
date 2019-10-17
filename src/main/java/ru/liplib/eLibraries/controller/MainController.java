@@ -16,7 +16,6 @@ import ru.liplib.eLibraries.model.LitresAcc;
 import ru.liplib.eLibraries.model.Person;
 import ru.liplib.eLibraries.model.PersonForm;
 import ru.liplib.eLibraries.model.User;
-import ru.liplib.eLibraries.repository.PersonRepository;
 import ru.liplib.eLibraries.service.LitresService;
 import ru.liplib.eLibraries.service.NonfictionService;
 import ru.liplib.eLibraries.service.PersonService;
@@ -25,8 +24,6 @@ import java.util.Map;
 
 @Controller
 public class MainController {
-    @Autowired
-    private PersonRepository personRepository;
     @Autowired
     private PersonService personService;
     @Autowired
@@ -38,14 +35,18 @@ public class MainController {
     public String greeting(
             @RequestParam(required = false, defaultValue = "") String filter,
             @RequestParam(required = false, defaultValue = "") String login,
+            @RequestParam(required = false, defaultValue = "") String chooseEL,
             Model model,
             @PageableDefault(sort = {"id"}, size = 25, direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Person> persons;
+        Page<Person> persons = null;
 
         if (filter != null && !filter.isEmpty()) {
-            persons = personRepository.findByFioContaining(filter, pageable);
+            persons = personService.findByFioContaining(filter, pageable);
+        } else if (login != null && !login.isEmpty()) {
+            Person p = personService.findByLogin(login, chooseEL);
+            persons = personService.findByFioAndBirthdate(p.getFio(), p.getBirthdate(), pageable);
         } else {
-            persons = personRepository.findAll(pageable);
+            persons = personService.findAll(pageable);
         }
 
         for (Person p: persons) {
@@ -56,6 +57,7 @@ public class MainController {
         }
 
         model.addAttribute("persons", persons);
+
         model.addAttribute("url", "/");
         model.addAttribute("filter", filter);
 
@@ -85,13 +87,13 @@ public class MainController {
                     break;
                 default:
                     long l = Long.parseLong(temp);
-                    model.addAttribute("person", personRepository.findById(l));
+                    model.addAttribute("person", personService.getById(l));
                     return "redirect:/person/" + l;
             }
         }
 
         Page<Person> persons;
-        persons = personRepository.findAll(pageable);
+        persons = personService.findAll(pageable);
 
         model.addAttribute("persons", persons);
         model.addAttribute("url", "/");
@@ -102,15 +104,5 @@ public class MainController {
     @GetMapping("/manager")
     public String managerPage(Map<String, Object> model) {
         return "admin/manager";
-    }
-
-    @GetMapping("/test")
-    public String testPage(Model model) {
-        long id = 958;
-        LitresAcc acc = litresService.getById(id);
-
-        model.addAttribute("acc", acc);
-
-        return "test";
     }
 }
