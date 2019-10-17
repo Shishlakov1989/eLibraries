@@ -13,7 +13,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,13 +58,6 @@ public class LitresService {
         return litresRepository.findByLogin(login);
     }
 
-    public void encryptAllAccs() {
-        List<LitresAcc> accList = (List) litresRepository.findAll();
-
-        accList.forEach(litresAcc -> {litresAcc.setEnc_pass(encrypt(litresAcc.getPassword()));
-        litresRepository.save(litresAcc);});
-    }
-
     private byte[] encrypt(String password) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
@@ -87,7 +79,11 @@ public class LitresService {
         return null;
     }
 
-    public String decrypt(byte[] pass) {
+    public void decrypt(LitresAcc acc) {
+        acc.setPassword(decrypt(acc.getEnc_pass()));
+    }
+
+    private String decrypt(byte[] pass) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             SecretKeySpec secretKey = new SecretKeySpec("p8mncs54f4a9aas6".getBytes(), "AES");

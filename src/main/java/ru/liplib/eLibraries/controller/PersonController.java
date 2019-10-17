@@ -6,9 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.liplib.eLibraries.model.*;
-import ru.liplib.eLibraries.repository.LitresRepository;
-import ru.liplib.eLibraries.repository.NonfictionRepository;
-import ru.liplib.eLibraries.repository.PersonRepository;
 import ru.liplib.eLibraries.service.LitresService;
 import ru.liplib.eLibraries.service.NonfictionService;
 import ru.liplib.eLibraries.service.PersonService;
@@ -21,8 +18,6 @@ public class PersonController {
     @Autowired
     private PersonService personService;
     @Autowired
-    private NonfictionRepository nonfictionRepository;
-    @Autowired
     private LitresService litresService;
     @Autowired
     private NonfictionService nonfictionService;
@@ -34,12 +29,12 @@ public class PersonController {
         model.addAttribute("pform", form);
 
         if (person.getLitres() != null) {
-            person.getLitres().setPassword(litresService.decrypt(person.getLitres().getEnc_pass()));
+            litresService.decrypt(person.getLitres());
             model.addAttribute("litres", person.getLitres());
         }
 
         if (person.getNonfiction() != null) {
-            person.getNonfiction().setPassword(nonfictionService.decrypt(person.getNonfiction().getEnc_pass()));
+            nonfictionService.decrypt(person.getNonfiction());
             model.addAttribute("nonfiction", person.getNonfiction());
         }
 

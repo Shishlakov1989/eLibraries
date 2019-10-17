@@ -1,8 +1,6 @@
 package ru.liplib.eLibraries.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Entity
@@ -10,19 +8,9 @@ public class PersonForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    @NotBlank(message = "Данное поле не может быть пустым")
-//    @Size(min = 2, max = 20, message = "Данное поле должно содержать от 2 до 20 символов")
     private String surname;
-
-//    @NotBlank(message = "Данное поле не может быть пустым")
-//    @Size(min = 2, max = 10, message = "Данное поле должно содержать от 2 до 10 символов (возможно использованы недопустимые символы)")
     private String name;
-
-//    @NotBlank(message = "Данное поле не может быть пустым")
-//    @Size(min = 2, max = 15, message = "Данное поле должно содержать от 2 до 15 символов (возможно использованы недопустимые символы)")
     private String patronymic;
-
     private String birthdate;
     @Transient
     private Date birthday;

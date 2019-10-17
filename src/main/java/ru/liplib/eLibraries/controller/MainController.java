@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.liplib.eLibraries.model.LitresAcc;
 import ru.liplib.eLibraries.model.Person;
 import ru.liplib.eLibraries.model.PersonForm;
 import ru.liplib.eLibraries.model.User;
@@ -51,9 +50,9 @@ public class MainController {
 
         for (Person p: persons) {
             if (p.getLitres() != null)
-                p.getLitres().setPassword(litresService.decrypt(p.getLitres().getEnc_pass()));
+                litresService.decrypt(p.getLitres());
             if (p.getNonfiction() != null)
-                p.getNonfiction().setPassword(nonfictionService.decrypt(p.getNonfiction().getEnc_pass()));
+                nonfictionService.decrypt(p.getNonfiction());
         }
 
         model.addAttribute("persons", persons);

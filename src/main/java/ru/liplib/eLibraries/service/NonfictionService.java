@@ -58,13 +58,6 @@ public class NonfictionService {
         return nonfictionRepository.findByLogin(login);
     }
 
-    public void encryptAllAccs() {
-        List<NonfictionAcc> accList = (List) nonfictionRepository.findAll();
-
-        accList.forEach(NonfictionAcc -> {NonfictionAcc.setEnc_pass(encrypt(NonfictionAcc.getPassword()));
-            nonfictionRepository.save(NonfictionAcc);});
-    }
-
     private byte[] encrypt(String password) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
@@ -86,7 +79,11 @@ public class NonfictionService {
         return null;
     }
 
-    public String decrypt(byte[] pass) {
+    public void decrypt(NonfictionAcc acc) {
+        acc.setPassword(decrypt(acc.getEnc_pass()));
+    }
+
+    private String decrypt(byte[] pass) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             SecretKeySpec secretKey = new SecretKeySpec("p8mncs54f4a9aas6".getBytes(), "AES");

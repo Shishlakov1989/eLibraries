@@ -6,9 +6,6 @@ import ru.liplib.eLibraries.model.LitresAcc;
 import ru.liplib.eLibraries.model.NonfictionAcc;
 import ru.liplib.eLibraries.model.Person;
 import ru.liplib.eLibraries.model.User;
-import ru.liplib.eLibraries.repository.LitresRepository;
-import ru.liplib.eLibraries.repository.NonfictionRepository;
-import ru.liplib.eLibraries.repository.PersonRepository;
 import ru.liplib.eLibraries.service.LitresService;
 import ru.liplib.eLibraries.service.NonfictionService;
 import ru.liplib.eLibraries.service.PersonService;
@@ -50,11 +47,13 @@ public class FileUtil {
             switch (parts.length) {
                 case 2:
                     litres = new LitresAcc(parts[0], parts[1]);
+                    parts = null;
                     litresService.save(litres);
                     litres = null;
                     break;
                 case 3:
                     nonfiction = new NonfictionAcc(parts[0], parts[1], parts[2]);
+                    parts = null;
                     nonfictionService.save(nonfiction);
                     nonfiction = null;
                     break;
