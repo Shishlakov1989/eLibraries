@@ -1,7 +1,7 @@
 <#import "../blocks/page.ftl" as p>
 
 <@p.main "Список пользователей">
-    <p class="text-center">Список пользователей</p>
+    <h3 class="text-center">Список пользователей</h3>
     <a class="btn btn-secondary" href="/registration">
         Добавить пользователя
     </a>

@@ -10,14 +10,17 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/manager">Manager</a>
+                <a class="nav-link" href="/statistic">Статистика</a>
             </li>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">Список пользователей</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/manager">Загрузить файл</a>
                 </li>
             </#if>
         </ul>
