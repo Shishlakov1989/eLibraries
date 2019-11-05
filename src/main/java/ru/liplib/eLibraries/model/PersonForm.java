@@ -12,8 +12,10 @@ public class PersonForm {
     private String name;
     private String patronymic;
     private String birthdate;
+
     @Transient
     private Date birthday;
+
     private String giveLitres;
     private String giveNonfiction;
 

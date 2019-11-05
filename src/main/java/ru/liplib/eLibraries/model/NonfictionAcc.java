@@ -11,10 +11,13 @@ public class NonfictionAcc {
 
     private String nfid;
     private String login;
+
     @Column(name = "password")
     private byte[] enc_pass;
+
     @Transient
     private String password;
+
     private boolean issued;
     private Date dateOfIssue;
     private int filial;

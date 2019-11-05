@@ -86,6 +86,8 @@ public class StatisticService {
 
         result.put("lrAll", litres);
         result.put("nfAll", nonfiction);
+        result.put("freeLr", (long) litresRepository.findByIssuedFalse().size());
+        result.put("freeNf", (long) nonfictionRepository.findByIssuedFalse().size());
 
         return result;
     }

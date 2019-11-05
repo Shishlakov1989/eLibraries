@@ -1,4 +1,5 @@
 <#import "blocks/page.ftl" as p>
+<#include "blocks/security.ftl">
 
 <@p.main "Статистика">
     <h4 class="text-center mb-4">Статистика выдачи учетных данных Литрес и Нон-фикшн за выбранный период</h4>
@@ -138,6 +139,13 @@
                 <td>${lrAll}</td>
                 <td>${nfAll}</td>
             </tr>
+            <#if isAdmin>
+                <tr>
+                    <td class="table-info">Свободно:</td>
+                    <td class="table-info">${freeLr}</td>
+                    <td class="table-info">${freeNf}</td>
+                </tr>
+            </#if>
             </tbody>
         </table>
     </#if>

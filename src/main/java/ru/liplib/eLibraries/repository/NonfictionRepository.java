@@ -10,6 +10,7 @@ public interface NonfictionRepository extends CrudRepository<NonfictionAcc, Long
     List<NonfictionAcc> findByIssuedFalseAndValidTrue();
     List<NonfictionAcc> findByValidFalse();
     List<NonfictionAcc> findByIssuedTrue();
+    List<NonfictionAcc> findByIssuedFalse();
     NonfictionAcc findByLogin(String login);
     List<NonfictionAcc> findByFilial(int filial);
     List<NonfictionAcc> findByDateOfIssueAfter(Date startDate);
