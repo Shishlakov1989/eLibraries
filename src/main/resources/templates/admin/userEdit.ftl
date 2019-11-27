@@ -29,7 +29,7 @@
             </div>
         </div>
         <!--<input type="text" name="username" value="${user.username}">-->
-        <input type="hidden" name="userId" value="${user.id}">
+        <input type="hidden" name="userId" value="${user.id?c}">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit" class="btn btn-primary mt-4">Сохранить</button>
     </form>

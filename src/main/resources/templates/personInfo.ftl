@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" name="id" value="${pform.id}">
+        <input type="hidden" name="id" value="${pform.id?c}">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
@@ -80,8 +80,8 @@
                         <td>${litres.filial}</td>
                         <#if isAdmin>
                             <td>
-                                <input type="hidden" name="lrId" value="${litres.id}" />
-                                <input type="hidden" name="pId" value="${pform.id}" />
+                                <input type="hidden" name="lrId" value="${litres.id?c}" />
+                                <input type="hidden" name="pId" value="${pform.id?c}" />
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                                 <button type="submit" class="btn btn-secondary">Редактировать пароль Литрес</button>
                             </td>
@@ -111,8 +111,8 @@
                         <td>${nonfiction.filial}</td>
                         <#if isAdmin>
                             <td>
-                                <input type="hidden" name="nfId" value="${nonfiction.id}" />
-                                <input type="hidden" name="pId" value="${pform.id}" />
+                                <input type="hidden" name="nfId" value="${nonfiction.id?c}" />
+                                <input type="hidden" name="pId" value="${pform.id?c}" />
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                                 <button type="submit" class="btn btn-secondary">Редактировать пароль Нон-фикшн</button>
                             </td>

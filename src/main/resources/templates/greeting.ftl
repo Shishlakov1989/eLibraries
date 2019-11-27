@@ -158,10 +158,10 @@
                         </td>
                         <td>
                             <#if person.litres??>
-                                <a data-toggle="collapse" href="#lrcollapseExample${person.id}" role="button" aria-expanded="false" aria-controls="lrcollapseExample${person.id}">
+                                <a data-toggle="collapse" href="#lrcollapseExample${person.id?c}" role="button" aria-expanded="false" aria-controls="lrcollapseExample${person.id?c}">
                                     ${person.litres.login}
                                 </a>
-                                <div class="collapse" id="lrcollapseExample${person.id}">
+                                <div class="collapse" id="lrcollapseExample${person.id?c}">
                                     ${person.litres.password}
                                 </div>
                             <#else>
@@ -170,17 +170,17 @@
                         </td>
                         <td>
                             <#if person.nonfiction??>
-                                <a data-toggle="collapse" href="#nfcollapseExample${person.id}" role="button" aria-expanded="false" aria-controls="nfcollapseExample${person.id}">
+                                <a data-toggle="collapse" href="#nfcollapseExample${person.id?c}" role="button" aria-expanded="false" aria-controls="nfcollapseExample${person.id?c}">
                                     ${person.nonfiction.login}
                                 </a>
-                                <div class="collapse" id="nfcollapseExample${person.id}">
+                                <div class="collapse" id="nfcollapseExample${person.id?c}">
                                     ${person.nonfiction.password}
                                 </div>
                             <#else>
                                 Отсутствует
                             </#if>
                         </td>
-                        <td><a href="/person/${person.id}">Редактировать</a></td>
+                        <td><a href="/person/${person.id?c}">Редактировать</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -216,10 +216,10 @@
                         </td>
                         <td>
                             <#if person.litres??>
-                                <a data-toggle="collapse" href="#lrcollapseExample${person.id}" role="button" aria-expanded="false" aria-controls="lrcollapseExample${person.id}">
+                                <a data-toggle="collapse" href="#lrcollapseExample${person.id?c}" role="button" aria-expanded="false" aria-controls="lrcollapseExample${person.id?c}">
                                     ${person.litres.login}
                                 </a>
-                                <div class="collapse" id="lrcollapseExample${person.id}">
+                                <div class="collapse" id="lrcollapseExample${person.id?c}">
                                     ${person.litres.password}
                                 </div>
                             <#else>
@@ -228,17 +228,17 @@
                         </td>
                         <td>
                             <#if person.nonfiction??>
-                                <a data-toggle="collapse" href="#nfcollapseExample${person.id}" role="button" aria-expanded="false" aria-controls="nfcollapseExample${person.id}">
+                                <a data-toggle="collapse" href="#nfcollapseExample${person.id?c}" role="button" aria-expanded="false" aria-controls="nfcollapseExample${person.id?c}">
                                     ${person.nonfiction.login}
                                 </a>
-                                <div class="collapse" id="nfcollapseExample${person.id}">
+                                <div class="collapse" id="nfcollapseExample${person.id?c}">
                                     ${person.nonfiction.password}
                                 </div>
                             <#else>
                                 Отсутствует
                             </#if>
                         </td>
-                        <td><a href="/person/${person.id}">Редактировать</a></td>
+                        <td><a href="/person/${person.id?c}">Редактировать</a></td>
                     </tr>
                     </#list>
                 </tbody>
